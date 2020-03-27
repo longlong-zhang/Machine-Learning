@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+		<link href="./git.css" type="text/css" rel="stylesheet">
+	</head>
+	<body>
+		<header>
+			<h1>Git 基本使用</h1>
+
+		</header>
+		<section>
+		<ol >
+			<li>git init //初始化仓库</li>
+			<li>git add .(文件name) //添加文件到本地仓库</li>
+			<li>git commit -m "first commit" //添加文件描述信息</li>
+			<li>git remote add origin + 远程仓库地址 //链接远程仓库，创建主分支</li>
+			<li>git pull origin master // 把本地仓库的变化连接到远程仓库主分支</li>
+			<li>git push -u origin master //把本地仓库的文件推送到远程仓库</li>
+		</ol>
+		<hr/>
+	   
+		<p><h2>Problem</h2>
+			<h3>Descrition:Updates were rejected because the tip of your current branch is behind</h3>
+
+		</p>
+		<p><h2>Solution</h2>
+			<ul>
+				<li>push前先将远程repository修改pull下来</li>
+				<ol>
+					<li>$git pull origin master</li>
+					<li>$git push -u origin master</li>
+				</ol>
+				
+			</ul>
+
+			<ul>
+				<li>使用强制push的方法：</li>
+				<ol>
+					<li>$ git push -u origin master -f </li>
+					
+				</ol>
+				<p class="note">这样会使远程修改丢失，一般是不可取的，尤其是多人协作开发的时候</p>
+				
+			</ul>
+
+			<ul>
+				<li>若不想merge远程和本地修改，可以先创建新的分支：</li>
+				<ol>
+					<li> $ git branch [name] </li>
+					<li>$ git push -u origin [name]</li>
+					
+				</ol>
+				
+				
+			</ul>
+		</p>
+		<hr/>
+		<p><h2>添加新文件（修改）后的二次提交</h2>
+			<ol>
+				<li>	git add 文件名</li>
+				<li> git add * 提交所有文件</li>
+				<li>git commit -m "这一次提交的描述,这一步不能省略"</li>
+				<li> git status "查看当前状态，可以省略"</li>
+				<li>git push -u origin note "note 是你要提交到的那个branch"</li>
+
+			
+			</ol>
+		
+		<hr/>
+		<p><h2>怎么在本地电脑建立github链接</h2>
+			<ol>
+				<li>在GitHub上新建一个respositories</li>
+				<li>生成ssh密匙
+					ssh-keygen -t rsa –C "你github邮箱"</li>
+				<li>windows电脑查找文件: 我的电脑 => 用户 => 用户名文件夹 => .ssh(隐藏文件) => id_rsa.pub(存有密匙)</li>	
+				<li>github账户配置密匙 //在网页端GitHub</li>
+				<li>暂存区 => 远程仓库
+					git remote add origin https://github.com/BullFei/testDemo.git
+					git push -u origin master</li>
+			</ol>
+		              
+
+                        
+
+
+		</p>
+
+
+
+
+
+		</section>
+
+	</body>
+</html>

@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+        <link href="./git.css" type="text/css" rel="stylesheet">
+        
+	</head>
+	<body>
+		<header>
+            <h1>Gulp 基本使用</h1>
+        </header>
+        <section>
+          <p> <a href="https://www.gulpjs.com.cn/">Gulp官网</a>
+            Gulp 是基于node.js的一个前端自动化构建工具，开发这可以使用它构建自动化工作流程（前端集成开发环境）。 
+             使用gulp你可以简化工作量，让你把重点放在功能的开发上，从而提高你的开发效率和工作质量。</p> 
+        <img src="img/3033F6F7-960D-42B4-AF46-6300A596F071.png" height="640" width="1140">
+        <hr/>
+        <p>
+            <h2>安装node.js</h2>
+            <a href="https://nodejs.org/en/">nodejs官网</a>
+            注意先要安装node.js 安装node.js一路下一步就好了
+            安装gulp  在mac版本下安装gulp
+            sudo npm install gulp -g
+            windows中直接省略sudo进行安装就可以了<br/>
+           【注】如果大家使用npm下载插件的时候，发现下载不下来，我们需要npm换成国内的淘宝源。
+            接下来所有npm开头的命令，大家都需要换成cnpm命令。<br/>
+           【注】只要开始使用cnpm的命令了，就必须都使用cnpm的名字。
+        </p>
+        <p>
+            <h2>一.Gulp项目的创建</h2>
+            1.npm init 初始化
+            <img src="img/DC2BC4E2-5608-40E5-A389-095E947E70F5.png" height="400" width="1140">
+            2.package.json配置<br/>
+            现在我们可以使用 package.json 进行gulp的配置
+            如果要使用gulp 需要在工程目录下重新安装gulp
+            使用命令<br/> npm install gulp --save-dev
+                   <br/> npm i gulp -D //这是简写<br/>
+            --save-dev 将gulp安装的信息保存packpage.json
+
+        </p>
+        <img src="img/A0E690C4-1C66-4FB8-A96F-83E047C65509.png" height="500" width="614">
+         <p><h2>二、使用Gulp创建任务</h2>
+            使用gulp创建任务 gulpfile.js  这个js文件是我们gulp非常重要的配置文件
+            配置完这个文件 我们就可以使用gulp了
+        </p> 
+        <img src="img/6A43D25A-DBAD-4A6A-AC3E-77D5F5831F5D.png" height="155" width="788">
+      
+        <p> 在根目录下新建一个js文件 gulpfile.js </p> 
+        <img src="img/D4E323D5-8A44-4E6B-8A9F-6BB33BC30CDE.png" height="400" width="959">
+        <p>在命令行中输入 gulp 任务名， 当然我们可以设置默认任务</p>
+        <div><img src="img//F49EA051-6243-4DEC-A8CB-009CDDAD6F9A.png" height="300" width="1140S"><br></div>
+        <p><h2>三、Gulp具体的一些功能</h2>
+            <b>gulp.src().pipe(gulp.dest())</b>
+
+这个章节我们实现两个功能 
+<br/> 1、读取将要处理的文件  2、把处理好的文件放在指定地方
+<br/>gulp.src   可以给我们找出需要处理的源文件
+<br/>pipe       来处理找出的文件 pipe可以理解为管道   每一个管道我们都可以指定任务去处理
+<br/>gulp.dest 最后通过这个命令将处理好的文件放在指定的地方
+<br/>完成一个文件的拷贝，我们可以通过上述命令完成
+<br/>return gulp.src('index.html').pipe(gulp.dest('dist'));
+        </p>
+        <img src="img/526AE4D5-7D9B-441C-BF57-A7585632D1DD.png" height="105" width="960">
+        <img src="img/CC3B4CC9-4B91-45EB-BE79-F529B9CAA0A0.png" height="309" width="940">
+        <p class="tip">
+         <b>Gulp实现两个文件夹拷贝到一个目标文件夹中:</b><br/>
+        下面我们来看一下如何将两个文件夹中的内容拷贝到一个目标文件夹中
+        下面我们来创建多任务文件夹拷贝
+        在我们日常开发中还可能有一些特殊的需求
+        比如，我们在拷贝文件的时候，可以排除一些文件
+        通过数组将这两个文件写在一起
+        在前面加!可以过滤掉这个文件，使这个文件不被拷贝<br/>
+        <span>return gulp.src(['xml/*.xml', 'json/*.json','!json/secret.json']).pipe(gulp.dest('dist/data')).</span>
+       </p> 
+
+       <p class="tip">
+        <b>Gulp一次性执行多个任务</b><br/>
+        上述我们通过三个任务完成了拷贝工作，那么我们通过什么方式可以一次性执行上述三个任务呢
+       </p>
+       <img src="img/7FDD3A04-1080-459A-B2A2-3A0A8FBAE7A3.png" height="121" width="934">
+
+       <p class="tip">
+        <b>Gulp的监听</b><br/>
+        除了上述文件拷贝的功能以外，我们还可以通过gulp去监听工程中文件的变化
+       </p>
+       <img src="img/FA529611-AD92-4516-ABBF-7C7041FCE167.png" height="199" width="940">
+       <p class="tip">
+           <b>gulp-concat合并文件</b><br/>
+           sudo npm install gulp-concat --save-dev<br/>
+           在这里我们将两个js文件进行合并 
+       </p>
+       <img src="img/35163D72-9A8D-465E-88EC-52277AF9A47E.png" height="175" width="960">
+
+       <p><h2>四、使用gulp-scss编译css文件</h2>
+        如果 我们想要通过gulp去编译scss文件成css文件  我们可以安装gulp-scss插件
+        通过下述命令 进行安装<br/> 
+        <b>sudo npm install gulp-sass —-save-dev</b><br/>
+        安装好以后 我们就可以使用gulp-sass编译文件了
+        <br/>【注】注意如果使用的是windows系统，请使用gulp-sass
+        </p>
+        <img src="img/B15817E8-94C9-47B1-BCF7-B1C93FA9AAE6.png" height="157" width="960">
+
+
+        <p><h2>五、gulp-connect来启动一个服务器</h2>
+            我们可以通过gulp-connect来启动一个服务程序
+            sudo npm install gulp-connect --save-dev<br/> 
+            </p>
+            <img src="img/A357C218-4D99-4349-AA91-5704083860F7.png" height="215" width="960">
+       
+    </section>
+    </body>
+</html>

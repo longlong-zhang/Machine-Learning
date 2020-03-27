@@ -1,0 +1,151 @@
+
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <link href="/static/build/styles/samples.37902ba3b7fe.css" rel="stylesheet" type="text/css" />
+        
+        <title>笑话生成器 - Silly_story_generator - code sample</title>
+    </head>
+    <body>
+        
+            <!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <style>
+        body {
+            font-family: helvetica, sans-serif;
+            width: 350px;         
+            border: 1px solid;
+            padding: 1em;
+        }
+        label {
+            font-weight: bold;
+        }
+        div {
+            padding-bottom: 20px;
+        }
+        input[type="text"] {
+            padding: 5px;
+            width: 150px;
+        }
+        p {
+            background: #FFC125;
+            color: #5E2612;
+            padding: 10px;
+            visibility: hidden;
+        }
+    </style>
+</head>
+
+<body>
+<div>
+    <label for="customname" id="lbl-customname">请输入自定义的名字：</label>
+    <input id="customname" type="text" placeholder="李雷">
+</div>
+<div>
+    <label for="cn" id="lbl-cn">中国</label><input id="cn" type="radio" name="country" value="cn" checked>
+    <label for="us" id="lbl-us">美国</label><input id="us" type="radio" name="country" value="us">
+    <label for="uk" id="lbl-uk">英国</label><input id="uk" type="radio" name="country" value="uk">
+</div>
+<div>
+    <button class="randomize">随机生成笑话</button>
+</div>
+<!-- Thanks a lot to Willy Aguirre for his help with the code for this assessment -->
+<p class="story"></p>
+
+<script>
+document.getElementById('cn').onclick = function () {
+    document.getElementById('lbl-customname').textContent = '请输入自定义的名字：';
+    document.getElementById('lbl-cn').textContent = '中国';
+    document.getElementById('lbl-us').textContent = '美国';
+    document.getElementById('lbl-uk').textContent = '英国';
+    document.getElementById('customname').placeholder = '李雷';
+    document.querySelector('.randomize').textContent = '随机生成笑话';
+};
+
+document.getElementById('us').onclick = document.getElementById('uk').onclick = function () {
+    document.getElementById('lbl-customname').textContent = 'Enter custom name:';
+    document.getElementById('lbl-cn').textContent = 'CN';
+    document.getElementById('lbl-us').textContent = 'US';
+    document.getElementById('lbl-uk').textContent = 'UK';
+    document.getElementById('customname').placeholder = 'Bob';
+    document.querySelector('.randomize').textContent = 'Generate random story';
+};
+
+var customName = document.getElementById('customname');
+var randomize = document.querySelector('.randomize');
+var story = document.querySelector('.story');
+
+function randomValueFromArray(array){
+    var random = Math.floor(Math.random()*array.length);
+    return array[random];
+}
+
+var storyText = 'It was 94 fahrenheit outside, so :insertx: went for a walk. When they got to :inserty:, they stared in horror for a few moments, then :insertz:. Bob saw the whole thing, but was not surprised — :insertx: weighs 300 pounds, and it was a hot day.';
+var insertX = ['Willy the Goblin','Big Daddy','Father Christmas'];
+var insertY = ['the soup kitchen','Disneyland','the White House'];
+var insertZ = ['spontaneously combusted','melted into a puddle on the sidewalk','turned into a slug and crawled away'];
+
+var storyTextZh = '外边有34度，:inserta:出去遛弯。当走到:insertb:时小伙伴们都惊呆了，他:insertc:。李雷全程目睹但他并没有慌，因为:inserta:是一个270斤的胖子，天气又辣么热。';
+var insertA = ['怪兽威利', '大老爹', '圣诞老人'];
+var insertB = ['救助站', '迪士尼乐园', '白宫'];
+var insertC = ['自燃了', '在人行道化成了一坨泥', '变成一条鼻涕虫爬走了'];
+
+randomize.addEventListener('click', result);
+
+function result() {
+    var newStory, xItem, yItem, zItem, name;
+    if (document.getElementById('cn').checked) {
+        newStory = storyTextZh;
+
+        xItem = randomValueFromArray(insertA);
+        yItem = randomValueFromArray(insertB);
+        zItem = randomValueFromArray(insertC);
+
+        newStory = newStory.replace(':inserta:', xItem);
+        newStory = newStory.replace(':inserta:', xItem);
+        newStory = newStory.replace(':insertb:', yItem);
+        newStory = newStory.replace(':insertc:', zItem);
+
+        if (customName.value !== '') {
+            name = customName.value;
+            newStory = newStory.replace('李雷', name);
+           }
+    } else {
+        newStory = storyText;
+
+        xItem = randomValueFromArray(insertX);
+        yItem = randomValueFromArray(insertY);
+        zItem = randomValueFromArray(insertZ);
+
+        newStory = newStory.replace(':insertx:', xItem);
+        newStory = newStory.replace(':insertx:', xItem);
+        newStory = newStory.replace(':inserty:', yItem);
+        newStory = newStory.replace(':insertz:', zItem);
+
+        if (customName.value !== '') {
+            name = customName.value;
+            newStory = newStory.replace('Bob', name);
+        }
+
+        if (document.getElementById("uk").checked) {
+            var weight = Math.round(300 * 0.0714286) + ' stone';
+            var temperature = Math.round((94 - 32) * 5 / 9) + ' centigrade';
+            newStory = newStory.replace('94 fahrenheit', temperature);
+            newStory = newStory.replace('300 pounds', weight);
+        }
+    }
+
+    story.textContent = newStory;
+    story.style.visibility = 'visible';
+}
+</script>
+
+</body>
+</html>
+        
+        
+    </body>
+</html>

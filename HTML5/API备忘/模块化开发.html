@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title></title>
+        <link href="./git.css" type="text/css" rel="stylesheet">
+        
+	</head>
+	<body>
+		<header>
+            <h1>模块化开发</h1>
+
+        </header>
+    <section>
+        <h2>一、Javascript模块化的写法-原始写法</h2>
+        <p>模块就是实现特定功能的一组方法。
+            只要把不同的函数（以及记录状态的变量）简单地放在一起，就算是一个模块。
+            </p>
+            <img src="img/3D649448-FC31-40FC-B6AC-3516B0097C65.png" height="208" width="722">
+        <p class="tip">上面的函数m1()和m2()，组成一个模块。使用的时候，直接调用就行了。
+            这种做法的缺点很明显：<span>"污染"了全局变量，无法保证不与其他模块发生变量名冲突，而且模块成员之间看不出直接关系。</span></p>
+        <h2>二、Javascript模块化的写法-对象写法</h2>
+        <p>为了解决上面的缺点，可以把模块写成一个对象，所有的模块成员都放到这个对象里面。</p>
+        <img src="img/10FCB6CA-98AB-44B5-88B3-0F05B9EB7A23.png" height="265" width="884">
+        <h2>三、Javascript模块化的写法-立即执行函数写法(闭包)</h2>
+        <p>使用<a href="http://benalman.com/news/2010/11/immediately-invoked-function-expression/">立即执行函数</a>（Immediately-Invoked Function Expression，IIFE），可以达到不暴露私有成员的目的</p>
+        <img src="img/A49C359F-350A-43D0-A9DC-95CDA8163559.png" height="290" width="735">
+        <h2>四、Javascript模块化的写法-放大模式</h2>
+        <p>如果一个模块很大，必须分成几个部分，或者一个模块需要继承另一个模块，这时就有必要采用"放大模式"（augmentation）</p>
+        <img src="img/55A9C46D-4102-4FC3-A97F-04F48497C751.png" height="150" width="803">
+        <h2>五、Javascript模块化的写法-宽放大模式</h2>
+        <p>在浏览器环境中，模块的各个部分通常都是从网上获取的，有时无法知道哪个部分会先加载。如果采用上一节的写法，第一个执行的部分有可能加载一个不存在空对象，这时就要采用"宽放大模式"。</p>
+        <img src="img/72CD954F-3794-4C68-8963-1F6DECF6168A.png" height="153" width="864">
+
+
+    </section>
+    </body>
+
+<html>

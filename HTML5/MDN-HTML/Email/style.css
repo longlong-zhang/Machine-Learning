@@ -1,0 +1,40 @@
+html{
+	font-size: 18px;
+	font-family: '中国龙粗明体',serif;
+}
+
+body {
+  max-width: 800px;
+  margin: 0px auto;
+ /* border: black; */
+}
+div{
+	width:700px;
+	height:1500px;
+	margin:20px auto;
+/* 	border-color: #000000; */
+}
+
+
+
+.sender-column {
+  text-align: right;
+  width:700px;
+  height:230px;
+}
+
+h1 {
+  font-size: 1.5em;
+}
+
+h2 {
+  font-size: 1.3em;
+}
+
+p, ul, ol, dl, address {
+  font-size: 1.1em;
+}
+
+p, li, dd, dt, address {
+  line-height: 1.5;
+}
