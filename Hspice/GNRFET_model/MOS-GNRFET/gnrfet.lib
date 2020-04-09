@@ -1,0 +1,358 @@
+********************************************************************
+* Graphene NanoRibbon Field Effect Transistors
+*             HSPICE Model
+*	     
+*
+*   
+*   Copyright University of Illinois at Urbana Champaign 2013
+*   Ying-Yu Chen, Artem Rogachev, Amit Sangai, Prof. Deming Chen
+*   All Rights Reserved.
+*
+*
+*   
+*   File name: gnrfet.lib
+********************************************************************
+
+********************************************************************
+* LICENSE AGREEMENT
+* University of Illinois at Urbana-Champaign and the authors 
+* provide these model files to you subject to the License Agreement, 
+* which may be updated by us from time to time without notice to you. 
+********************************************************************
+
+.lib GNRFET
+
+.protect
+
+.lib 'parameters.lib' parameters
+
+.subckt gnrfetnmos ns ng nd nb nRib=4 N=12 L=15n Tox=1n sp=2n dop=5e-3 p=0 
+
+*************************
+* Modeling
+*************************
+
+* Widths
+.param WGNR = '(n/2 + 0.5) * sqrt(3) * 0.144e-9';
+.param Wgate = 'WGNR + 2 * sp'
+
+* Subbands
+* Can be extended by using printsbbd.m in MATLAB
+* Replace the contents between "SUBBAND DEFINITION START" and "SUBBAND DEFINITION END" with subbands.txt generated in MATLAB
+************** SUBBAND DEFINITION START
+.if (N == 6)
+    .param sbbd1a = '5.536744e-001'
+    .param sbbd2a = '1.674362e+000'
+    .param sbbd3a = '2.130378e+000'
+    .param mass1a = '9.320845e-032'
+    .param mass2a = '7.897848e-031'
+    .param mass3a = '7.897848e-031'
+    .param sbbd1b = '1.620000e-001'
+    .param sbbd2b = '1.922537e+000'
+    .param sbbd3b = '2.130378e+000'
+    .param mass1b = '3.400758e-032'
+    .param mass2b = '2.330101e-031'
+    .param mass3b = '7.897848e-031'
+.elseif (N == 7)
+    .param sbbd1a = '7.717851e-001'
+    .param sbbd2a = '1.037377e+000'
+    .param sbbd3a = '2.265225e+000'
+    .param mass1a = '2.116835e-031'
+    .param mass2a = '1.539861e-031'
+    .param mass3a = '1.539861e-031'
+    .param sbbd1b = '5.536744e-001'
+    .param sbbd2b = '1.674362e+000'
+    .param sbbd3b = '2.265225e+000'
+    .param mass1b = '9.320856e-032'
+    .param mass2b = '7.897857e-031'
+    .param mass3b = '1.539861e-031'
+.elseif (N == 8)
+    .param sbbd1a = '1.080000e-001'
+    .param sbbd2a = '1.377143e+000'
+    .param sbbd3a = '1.901958e+000'
+    .param mass1a = '2.267169e-032'
+    .param mass2a = '1.886927e-031'
+    .param mass3a = '1.886927e-031'
+    .param sbbd1b = '7.717851e-001'
+    .param sbbd2b = '1.037377e+000'
+    .param sbbd3b = '1.901958e+000'
+    .param mass1b = '2.116837e-031'
+    .param mass2b = '1.539863e-031'
+    .param mass3b = '1.886927e-031'
+.elseif (N == 9)
+    .param sbbd1a = '3.892160e-001'
+    .param sbbd2a = '1.148533e+000'
+    .param sbbd3a = '1.623916e+000'
+    .param mass1a = '6.950279e-032'
+    .param mass2a = '3.901136e-031'
+    .param mass3a = '3.901136e-031'
+    .param sbbd1b = '1.080000e-001'
+    .param sbbd2b = '1.377143e+000'
+    .param sbbd3b = '1.623916e+000'
+    .param mass1b = '2.267172e-032'
+    .param mass2b = '1.886929e-031'
+    .param mass3b = '3.901136e-031'
+.elseif (N == 10)
+    .param sbbd1a = '5.542453e-001'
+    .param sbbd2a = '7.689552e-001'
+    .param sbbd3a = '1.808332e+000'
+    .param mass1a = '1.400393e-031'
+    .param mass2a = '1.232487e-031'
+    .param mass3a = '1.232487e-031'
+    .param sbbd1b = '3.892160e-001'
+    .param sbbd2b = '1.148533e+000'
+    .param sbbd3b = '1.808332e+000'
+    .param mass1b = '6.950287e-032'
+    .param mass2b = '3.901141e-031'
+    .param mass3b = '1.232487e-031'
+.elseif (N == 11)
+    .param sbbd1a = '8.100001e-002'
+    .param sbbd2a = '1.064377e+000'
+    .param sbbd3a = '1.403143e+000'
+    .param mass1a = '1.700377e-032'
+    .param mass2a = '1.579940e-031'
+    .param mass3a = '1.579940e-031'
+    .param sbbd1b = '5.542453e-001'
+    .param sbbd2b = '7.689552e-001'
+    .param sbbd3b = '1.403143e+000'
+    .param mass1b = '1.400395e-031'
+    .param mass2b = '1.232488e-031'
+    .param mass3b = '1.579940e-031'
+.elseif (N == 12)
+    .param sbbd1a = '3.000278e-001'
+    .param sbbd2a = '8.722902e-001'
+    .param sbbd3a = '1.298120e+000'
+    .param mass1a = '5.543624e-032'
+    .param mass2a = '2.581942e-031'
+    .param mass3a = '2.581942e-031'
+    .param sbbd1b = '8.100001e-002'
+    .param sbbd2b = '1.064377e+000'
+    .param sbbd3b = '1.298120e+000'
+    .param mass1b = '1.700379e-032'
+    .param mass2b = '1.579942e-031'
+    .param mass3b = '2.581942e-031'
+.elseif (N == 13)
+    .param sbbd1a = '4.321722e-001'
+    .param sbbd2a = '6.102597e-001'
+    .param sbbd3a = '1.485904e+000'
+    .param mass1a = '1.045475e-031'
+    .param mass2a = '1.027343e-031'
+    .param mass3a = '1.027343e-031'
+    .param sbbd1b = '3.000278e-001'
+    .param sbbd2b = '8.722902e-001'
+    .param sbbd3b = '1.485904e+000'
+    .param mass1b = '5.543631e-032'
+    .param mass2b = '2.581945e-031'
+    .param mass3b = '1.027343e-031'
+.elseif (N == 14)
+    .param sbbd1a = '6.480001e-002'
+    .param sbbd2a = '8.655896e-001'
+    .param sbbd3a = '1.109458e+000'
+    .param mass1a = '1.360302e-032'
+    .param mass2a = '1.357786e-031'
+    .param mass3a = '1.357786e-031'
+    .param sbbd1b = '4.321722e-001'
+    .param sbbd2b = '6.102597e-001'
+    .param sbbd3b = '1.109458e+000'
+    .param mass1b = '1.045476e-031'
+    .param mass2b = '1.027344e-031'
+    .param mass3b = '1.357786e-031'
+.elseif (N == 15)
+    .param sbbd1a = '2.440806e-001'
+    .param sbbd2a = '7.026473e-001'
+    .param sbbd3a = '1.077877e+000'
+    .param mass1a = '4.611311e-032'
+    .param mass2a = '1.927205e-031'
+    .param mass3a = '1.927205e-031'
+    .param sbbd1b = '6.480001e-002'
+    .param sbbd2b = '8.655896e-001'
+    .param sbbd3b = '1.077877e+000'
+    .param mass1b = '1.360303e-032'
+    .param mass2b = '1.357788e-031'
+    .param mass3b = '1.927205e-031'
+.elseif (N == 16)
+    .param sbbd1a = '3.541016e-001'
+    .param sbbd2a = '5.056780e-001'
+    .param sbbd3a = '1.256048e+000'
+    .param mass1a = '8.338309e-032'
+    .param mass2a = '8.807449e-032'
+    .param mass3a = '8.807449e-032'
+    .param sbbd1b = '2.440806e-001'
+    .param sbbd2b = '7.026473e-001'
+    .param sbbd3b = '1.256048e+000'
+    .param mass1b = '4.611317e-032'
+    .param mass2b = '1.927207e-031'
+    .param mass3b = '8.807449e-032'
+.elseif (N == 17)
+    .param sbbd1a = '5.400001e-002'
+    .param sbbd2a = '7.288017e-001'
+    .param sbbd3a = '9.166688e-001'
+    .param mass1a = '1.133585e-032'
+    .param mass2a = '1.190069e-031'
+    .param mass3a = '1.190069e-031'
+    .param sbbd1b = '3.541016e-001'
+    .param sbbd2b = '5.056780e-001'
+    .param sbbd3b = '9.166688e-001'
+    .param mass1b = '8.338319e-032'
+    .param mass2b = '8.807460e-032'
+    .param mass3b = '1.190069e-031'
+.elseif (N == 18)
+    .param sbbd1a = '2.057149e-001'
+    .param sbbd2a = '5.880488e-001'
+    .param sbbd3a = '9.203988e-001'
+    .param mass1a = '3.947750e-032'
+    .param mass2a = '1.536550e-031'
+    .param mass3a = '1.536550e-031'
+    .param sbbd1b = '5.400001e-002'
+    .param sbbd2b = '7.288017e-001'
+    .param sbbd3b = '9.203988e-001'
+    .param mass1b = '1.133586e-032'
+    .param mass2b = '1.190070e-031'
+    .param mass3b = '1.536550e-031'
+.elseif (N == 19)
+    .param sbbd1a = '2.998956e-001'
+    .param sbbd2a = '4.316282e-001'
+    .param sbbd3a = '1.085977e+000'
+    .param mass1a = '6.933515e-032'
+    .param mass2a = '7.707638e-032'
+    .param mass3a = '7.707638e-032'
+    .param sbbd1b = '2.057149e-001'
+    .param sbbd2b = '5.880488e-001'
+    .param sbbd3b = '1.085977e+000'
+    .param mass1b = '3.947755e-032'
+    .param mass2b = '1.536552e-031'
+    .param mass3b = '7.707638e-032'
+.elseif (N == 20)
+    .param sbbd1a = '4.628573e-002'
+    .param sbbd2a = '6.291214e-001'
+    .param sbbd3a = '7.806355e-001'
+    .param mass1a = '9.716442e-033'
+    .param mass2a = '1.059096e-031'
+    .param mass3a = '1.059096e-031'
+    .param sbbd1b = '2.998956e-001'
+    .param sbbd2b = '4.316282e-001'
+    .param sbbd3b = '7.806355e-001'
+    .param mass1b = '6.933523e-032'
+    .param mass2b = '7.707647e-032'
+    .param mass3b = '1.059096e-031'
+.endif
+************** SUBBAND DEFINITION END
+
+.param to6(x) = 'x*x*x*x*x*x'
+.param to8(x) = 'x*x*x*x*x*x*x*x'
+.param equisbbd(sbbda, sbbdb) =  'sbbda*(to8(1-p))+sbbdb*(1-to8(1-p))'
+.param sbbd1 = 'equisbbd(sbbd1a, sbbd1b)'
+.param sbbd2 = 'equisbbd(sbbd2a, sbbd2b)'
+.param sbbd3 = 'equisbbd(sbbd3a, sbbd3b)'
+.param mass1 = 'equisbbd(mass1a, mass1b)'
+.param mass2 = 'equisbbd(mass2a, mass2b)'
+.param mass3 = 'equisbbd(mass3a, mass3b)'
+
+* Current (NMOS)
+.param ids_band(Vch_s, Vch_d, sbbd) = 'log(1 + exp((Vch_s-sbbd)/kT)) - log(1 + exp((Vch_d-sbbd)/kT))'
+.param ids(Vch_s, Vch_d) = '(2.0*P__qkT_h) * (ids_band(Vch_s, Vch_d, sbbd1) + ids_band(Vch_s, Vch_d, sbbd2) + ids_band(Vch_s, Vch_d, sbbd3))'
+.param imax(Vd_s, sbbd) = '4.0*P__qkT_h *(log((1+exp((Vd_s-sbbd-P__Ef)/kT))/(1+exp((sbbd-P__Ef)/kT))))'
+.param f_c(Vd_s, Vch_s, L) = '(Vd_s + P__Ef - Vch_s) / L'
+.param exp_factor(Vd_s, Vch_s, L, sbbd, mass) = '(-P__pi*sqrt(mass)*(0.5*sbbd)*sqrt(0.5*sbbd))/(P__hbar*f_c(Vd_s, Vch_s, L))'
+.param exp_factor_cor(Vd_s, Vch_s, L, sbbd, mass) = 'exp_factor(Vd_s, Vch_s, L, sbbd, mass) / sqrt(P__q)'
+.param i_btbt_band(Vd_s, Vch_s, L, sbbd, mass) = 'max(imax(Vd_s, sbbd) * (P__pi*P__pi/9*exp(exp_factor_cor(Vd_s, Vch_s, L, sbbd, mass))), 0)'
+.param i_btbt(Vd_s, Vch_s, L) = 'i_btbt_band(Vd_s, Vch_s, L, sbbd1, mass1) + i_btbt_band(Vd_s, Vch_s, L, sbbd2, mass2) + i_btbt_band(Vd_s, Vch_s, L, sbbd3, mass3)'
+.param a_c(p) = '0.98 * to6(1-4*p) + 0.02'
+.param i_total(Vch_s, Vch_d, L, p) = 'a_c(p) * (ids(Vch_s, Vch_d) + i_btbt(Vch_s - Vch_d, Vch_s, L))'
+
+* Cgs Cgd
+.param Cgs_val = '1.26e-10 * Wgate * (0.8 - 0.2*Tox + 0.015*Tox*Tox)'
+
+* Cins
+.param Vbi0 = 'sbbd1-0.05 + dop*30 + dop*dop*1000'
+.param Vbi(Vd_s) = 'Vbi0 + Vd_s*(1- 1/(1+exp((Vbi0-sbbd1+0.02) /0.01)))'
+.param Tran(Vd_s) = '1*(1-1/(1+exp((Vbi(Vd_s) - 2.6*sbbd1)/0.05)))'
+.param Cgch_val(L, Wgate, WGNR, Tox) = '(L*5.55e-11*P__epsSi) / ((1 + 1.5*Tox/Wgate) * log((5.98*Tox) / (0.8*WGNR)))'
+.param Cox_val(L, Wgate, WGNR, Tox) = '(Cgch_val(L, Wgate, WGNR, Tox) + Cgch_val(L, Wgate, WGNR, Tox2) * gates_tied)'
+.param Cdch_val(L, Wgate, WGNR, Tox, Vd_s) = 'Cox_val(L, Wgate, WGNR, Tox) * 0.15 * Tran(Vd_s)'
+.param Csch_val(L, Wgate, WGNR, Tox) = 'Cox_val(L, Wgate, WGNR, Tox) * 0.05'
+.param Csb_val(L, Wgate, WGNR, Tox) = '(1-gates_tied)*Cgch_val(L, Wgate, WGNR, Tox2) + Csch_val(L, Wgate, WGNR, Tox)'
+
+
+* Qch
+.param f_d(deltaE) = '1 / (1 + exp(deltaE / kT))'
+.param beta_temp(deltaE) = '3 / (log(f_d(-deltaE)*(1 + exp((3 * kT - deltaE)/kT))))'
+.param beta(deltaE) = '1 / (beta_temp(deltaE) * kT)'
+.param beta_cube(deltaE) = 'beta(deltaE) * beta(deltaE) * beta(deltaE)'
+.param m_c(deltaE) = '1 / (1 + exp(3 * (deltaE - kT)/kT))'
+
+.param n_c(mass) = '4*sqrt(mass)/(P__h)*sqrt(6.24e18)'
+.param n_exp(sbbd, mass, deltaE) = 'n_c(mass) * f_d(-deltaE) * sqrt(P__pi/8/beta_cube(deltaE))*(1+2*beta(deltaE)*sbbd)/sbbd'
+.param n_step(sbbd, mass, deltaE) = 'n_c(mass) * sqrt(max(deltaE*(deltaE+2*sbbd)/sbbd,0))'
+
+.param n_total(sbbd, mass, deltaE) = 'm_c(deltaE) * n_exp(sbbd, mass, deltaE) + (1 - m_c(deltaE)) * n_step(sbbd, mass, deltaE)'
+.param n_total_s(sbbd, mass, Vch_s, Vd_s) = 'n_total(sbbd, mass, Vch_s-sbbd) - Tran(Vd_s)*n_total(sbbd, mass, -Vch_s-sbbd)'
+.param n_total_d(sbbd, mass, Vch_d, Vd_s) = 'n_total(sbbd, mass, Vch_d-sbbd) - Tran(Vd_s)*n_total(sbbd, mass, -Vch_d-sbbd)'
+* Scaled by 1/P__q
+.param Qch_band_s(sbbd, mass, Vch_s, Vd_s, L) = '0.5 * L * n_total_s(sbbd, mass, Vch_s, Vd_s)'
+.param Qch_band_d(sbbd, mass, Vch_d, Vd_s, L) = '0.5 * L * n_total_d(sbbd, mass, Vch_d, Vd_s)'
+.param Qch_s(Vch_s, Vd_s, L) = 'Qch_band_s(sbbd1, mass1, Vch_s, Vd_s, L) + Qch_band_s(sbbd2, mass2, Vch_s, Vd_s, L) + Qch_band_s(sbbd3, mass3, Vch_s, Vd_s, L)'
+.param Qch_d(Vch_d, Vd_s, L) = 'Qch_band_d(sbbd1, mass1, Vch_d, Vd_s, L) + Qch_band_d(sbbd2, mass2, Vch_d, Vd_s, L) + Qch_band_d(sbbd3, mass3, Vch_d, Vd_s, L)'
+.param Qch(Vch_s, Vch_d, L) = 'Qch_s(Vch_s, Vch_s-Vch_d, L) + Qch_d(Vch_d, Vch_s-Vch_d, L)'
+
+*************************
+* GNRFET Definition
+*************************
+
+* Parasitic Capacitors
+Cgs ng ns c='nRib * Cgs_val'
+Cgd ng nd c='nRib * Cgs_val'
+
+* VCCS
+gds nd ns cur='nRib * i_total(v(nch, ns), v(nch, nd), L, p)'
+
+* Vch
+cgch ng nch c='nRib * Cgch_val(L, Wgate, WGNR, Tox)'
+cbch nb nch c='nRib * Cgch_val(L, Wgate, WGNR, Tox2)'
+cdch nd nch q='-Qch_d(v(nch, nd), v(nd, ns), L) * P__q'
+csch ns nch q='-Qch_s(v(nch, ns), v(nd, ns), L) * P__q'
+ech nch ns nch2 ns2 1
+
+* Vch Solver
+eg2 ng2 ns2 ng ns 1
+ed2 nd2 ns2 nd ns 1
+eb2 nb2 ns2 nb ns 1
+vs2 ns2 ns 0
+rdummy nch2 ns2 1e15
+* Scaled by P__q
+gCins ng2 nch2 cur='(Cox_val(L, Wgate, WGNR, Tox) * v(ng2, nch2) + Csb_val(L, Wgate, WGNR, Tox) * v(ns2, nch2) + Cdch_val(L, Wgate, WGNR, Tox, v(nd2, ns2)) * v(nd2, nch2)) / P__q'
+* Scaled by P__q (Qch is already scaled)
+gQch nch2 ns2 cur='Qch(v(nch2, ns2), v(nch2, nd2), L)'
+
+.ends gnrfetnmos
+
+
+
+.subckt gnrfetpmos ns ng nd nb nRib=4 n=12 L=15n Tox=1n sp=2n dop=5e-3 p=0
+
+* Widths
+.param WGNR = '(n/2 + 0.5) * sqrt(3) * 0.144e-9';
+.param Wgate = 'WGNR + 2 * sp'
+
+* Cgs Cgd
+.param Cgs_val = '1.26e-10 * Wgate * (0.8 - 0.2*Tox + 0.015*Tox*Tox)'
+
+* Cins
+.param Cgch_val(L, Wgate, WGNR, Tox) = '(L*5.55e-11*P__epsSi) / ((1 + 1.5*Tox/Wgate) * log((5.98*Tox) / (0.8*WGNR)))'
+
+xgnrfetnmos1 nd ng2 ns nb2 gnrfetnmos nRib=nRib n=n L=L Tox=Tox sp=sp dop=dop p=p
+eg ng2 ns ng nd -1
+eb nb2 ns nb nd -1
+ech nch ns xgnrfetnmos1.nch xgnrfetnmos1.ns -1
+
+* Parasitic Capacitors
+Cgs ng ns c='nRib * Cgs_val'
+Cgd ng nd c='nRib * Cgs_val'
+cgch ng nch c='nRib * Cgch_val(L, Wgate, WGNR, Tox)'
+cbch nb nch c='nRib * Cgch_val(L, Wgate, WGNR, Tox2)'
+
+.ends gnrfetpmos
+
+
+.unprotect
+.endl GNRFET

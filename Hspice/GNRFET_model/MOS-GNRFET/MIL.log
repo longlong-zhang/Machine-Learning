@@ -1,0 +1,37 @@
+pnlAddPane();
+nil
+1
+designOpen("c:\\users\\18851\\desktop\\gnrfet_spice_models_uiuc\\gnrfet_model\\mos-gnrfet\\gnrfet_sample.sp");
+"D0"
+t
+pnlAddCurve(1, node(D0,"A0","v(0)"), node(D0,"A0","VOLTS"));
+nil
+pnlAddCurve(1, node(D0,"A0","v(drain)"), node(D0,"A0","VOLTS"));
+nil
+pnlAddCurve(1, node(D0,"A0","v(gate)"), node(D0,"A0","VOLTS"));
+nil
+pnlAddCurve(1, node(D0,"A0","v(source)"), node(D0,"A0","VOLTS"));
+nil
+pnlAddCurve(1, node(D0,"A0","v(sub)"), node(D0,"A0","VOLTS"));
+nil
+pnlDelCurve(1, node(D0,"A0","v(drain)"), node(D0,"A0","VOLTS"));
+nil
+pnlAddCurve(1, node(D0,"A0","v(source)"), node(D0,"A0","VOLTS"));
+nil
+pnlAddCurve(1, node(D0,"A0","i(vdd)"), node(D0,"A0","VOLTS"));
+nil
+pnlAddCurve(1, node(D0,"A0","i(vss)"), node(D0,"A0","VOLTS"));
+nil
+pnlAddCurve(1, node(D0,"A0","i(vgg)"), node(D0,"A0","VOLTS"));
+nil
+pnlAddCurve(1, node(D0,"A0","i(vsub)"), node(D0,"A0","VOLTS"));
+nil
+pnlAddCurve(1, node(D0,"A0","i(vdd)"), node(D0,"A0","VOLTS"));
+nil
+pnlAddCurve(1, node(D0,"A0","0:vdd"), node(D0,"A0","VOLTS"));
+nil
+pnlAddCurve(1, node(D0,"A0","v(drain)"), node(D0,"A0","VOLTS"));
+nil
+pnlDeletePane(1, 1);
+nil
+nil

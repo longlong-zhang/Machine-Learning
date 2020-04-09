@@ -1,0 +1,32 @@
+.lib parameters
+
+
+*************************
+* Constants
+*************************
+
+* electron charge in Coulomb
+.param P__q = '1.60217646e-19'
+* Planck's constant in eV.s
+.param P__h = '4.135667516e-15'
+* Boltzmann's constant in eV/K
+.param P__k = '8.6173324e-5'
+.param P__pi = '3.14159265'
+* relative permittivity of SiO2
+.param P__epsSi = '3.9'
+.param P__hbar = 'P__h / (2.0 * P__pi)'
+
+.param P__Ef = '0.4'
+
+* temperature in K
+.param P__T = '300.0'
+* k * T = thermal voltage
+.param kT = 'P__k * P__T'
+* thermal voltage = Boltzmann's constant * temperature / q (approximately 0.0259 @ 300K)
+* .param Vthm = '0.0259'
+* constant in front of the current equation = q * k * T / h
+.param P__qkT_h = 'P__q * P__k * P__T / P__h'
+
+.param Tox2 = '20n'
+.param gates_tied = '0'
+.endl parameters

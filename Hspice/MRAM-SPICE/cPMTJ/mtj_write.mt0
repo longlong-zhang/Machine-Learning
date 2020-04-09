@@ -1,0 +1,6 @@
+$DATA1 SOURCE='HSPICE' VERSION='A-2008.03 32-BIT'
+.TITLE '************************************************************************'
+ tsw0             iwr              thermal_stability temper            
+ alter#            
+    failed         1.461e-04         69.2804          25.0000         
+    1.0000         

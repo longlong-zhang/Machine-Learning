@@ -1,0 +1,392 @@
+********************************************************************
+* Schottky-Barrier Graphene NanoRibbon Field Effect Transistors
+*             HSPICE Model
+*	     
+*
+*   
+*   Copyright University of Illinois at Urbana-Champaign 2013
+*   Morteza Gholipour, Ying-Yu Chen, Amit Sangai, Prof. Deming Chen
+*   All Rights Reserved.
+*
+*
+*   
+*   File name: sbgnrfet-DG.lib
+********************************************************************
+
+********************************************************************
+* LICENSE AGREEMENT
+* University of Illinois at Urbana-Champaign and the authors 
+* provide these model files to you subject to the License Agreement, 
+* which may be updated by us from time to time without notice to you. 
+********************************************************************
+
+.lib GNRFET
+
+.protect
+
+.lib 'parameters.lib' parameters
+
+.subckt gnrfetsb nd ng ns nb nRib=4 N=12 L=15n Tox=1n sp=2n p=0
+
+*************************
+* Modeling
+*************************
+
+* Widths
+.param WGNR = '(n/2 + 0.5) * sqrt(3) * 0.144e-9';
+.param Wgate = 'WGNR + 2 * sp'
+
+* Subbands
+* Can be extended by using printsbbd.m in MATLAB
+* Replace the contents between "SUBBAND DEFINITION START" and "SUBBAND DEFINITION END" with subbands.txt generated in MATLAB
+************** SUBBAND DEFINITION START
+.if (N == 6)
+    .param sbbd1a = '5.536744e-001'
+    .param sbbd2a = '1.674362e+000'
+    .param sbbd3a = '2.130378e+000'
+    .param mass1a = '9.320856e-032'
+    .param mass2a = '7.897857e-031'
+    .param mass3a = '2.481861e-031'
+    .param sbbd1b = '1.620000e-001'
+    .param sbbd2b = '1.922537e+000'
+    .param sbbd3b = '2.916000e+000'
+    .param mass1b = '3.400758e-032'
+    .param mass2b = '2.330101e-031'
+    .param mass3b = '1.705214e-022'
+.elseif (N == 7)
+    .param sbbd1a = '7.717851e-001'
+    .param sbbd2a = '1.037377e+000'
+    .param sbbd3a = '2.265225e+000'
+    .param mass1a = '2.116837e-031'
+    .param mass2a = '1.539863e-031'
+    .param mass3a = '2.573515e-031'
+    .param sbbd1b = '5.536744e-001'
+    .param sbbd2b = '1.674362e+000'
+    .param sbbd3b = '2.130378e+000'
+    .param mass1b = '9.320856e-032'
+    .param mass2b = '7.897857e-031'
+    .param mass3b = '2.481861e-031'
+.elseif (N == 8)
+    .param sbbd1a = '1.080000e-001'
+    .param sbbd2a = '1.377143e+000'
+    .param sbbd3a = '1.901958e+000'
+    .param mass1a = '2.267172e-032'
+    .param mass2a = '1.886929e-031'
+    .param mass3a = '1.149639e-030'
+    .param sbbd1b = '7.717851e-001'
+    .param sbbd2b = '1.037377e+000'
+    .param sbbd3b = '2.265225e+000'
+    .param mass1b = '2.116837e-031'
+    .param mass2b = '1.539863e-031'
+    .param mass3b = '2.573515e-031'
+.elseif (N == 9)
+    .param sbbd1a = '3.892160e-001'
+    .param sbbd2a = '1.148533e+000'
+    .param sbbd3a = '1.623916e+000'
+    .param mass1a = '6.950287e-032'
+    .param mass2a = '3.901141e-031'
+    .param mass3a = '2.106865e-031'
+    .param sbbd1b = '1.080000e-001'
+    .param sbbd2b = '1.377143e+000'
+    .param sbbd3b = '1.901958e+000'
+    .param mass1b = '2.267172e-032'
+    .param mass2b = '1.886929e-031'
+    .param mass3b = '1.149639e-030'
+.elseif (N == 10)
+    .param sbbd1a = '5.542453e-001'
+    .param sbbd2a = '7.689552e-001'
+    .param sbbd3a = '1.808332e+000'
+    .param mass1a = '1.400395e-031'
+    .param mass2a = '1.232488e-031'
+    .param mass3a = '2.256222e-031'
+    .param sbbd1b = '3.892160e-001'
+    .param sbbd2b = '1.148533e+000'
+    .param sbbd3b = '1.623916e+000'
+    .param mass1b = '6.950287e-032'
+    .param mass2b = '3.901141e-031'
+    .param mass3b = '2.106865e-031'
+.elseif (N == 11)
+    .param sbbd1a = '8.100001e-002'
+    .param sbbd2a = '1.064377e+000'
+    .param sbbd3a = '1.403143e+000'
+    .param mass1a = '1.700379e-032'
+    .param mass2a = '1.579942e-031'
+    .param mass3a = '5.690314e-031'
+    .param sbbd1b = '5.542453e-001'
+    .param sbbd2b = '7.689552e-001'
+    .param sbbd3b = '1.808332e+000'
+    .param mass1b = '1.400395e-031'
+    .param mass2b = '1.232488e-031'
+    .param mass3b = '2.256222e-031'
+.elseif (N == 12)
+    .param sbbd1a = '3.000278e-001'
+    .param sbbd2a = '8.722902e-001'
+    .param sbbd3a = '1.298120e+000'
+    .param mass1a = '5.543631e-032'
+    .param mass2a = '2.581945e-031'
+    .param mass3a = '1.820319e-031'
+    .param sbbd1b = '8.100001e-002'
+    .param sbbd2b = '1.064377e+000'
+    .param sbbd3b = '1.403143e+000'
+    .param mass1b = '1.700379e-032'
+    .param mass2b = '1.579942e-031'
+    .param mass3b = '5.690314e-031'
+.elseif (N == 13)
+    .param sbbd1a = '4.321722e-001'
+    .param sbbd2a = '6.102597e-001'
+    .param sbbd3a = '1.485904e+000'
+    .param mass1a = '1.045476e-031'
+    .param mass2a = '1.027344e-031'
+    .param mass3a = '1.994841e-031'
+    .param sbbd1b = '3.000278e-001'
+    .param sbbd2b = '8.722902e-001'
+    .param sbbd3b = '1.298120e+000'
+    .param mass1b = '5.543631e-032'
+    .param mass2b = '2.581945e-031'
+    .param mass3b = '1.820319e-031'
+.elseif (N == 14)
+    .param sbbd1a = '6.480001e-002'
+    .param sbbd2a = '8.655896e-001'
+    .param sbbd3a = '1.109458e+000'
+    .param mass1a = '1.360303e-032'
+    .param mass2a = '1.357788e-031'
+    .param mass3a = '3.768418e-031'
+    .param sbbd1b = '4.321722e-001'
+    .param sbbd2b = '6.102597e-001'
+    .param sbbd3b = '1.485904e+000'
+    .param mass1b = '1.045476e-031'
+    .param mass2b = '1.027344e-031'
+    .param mass3b = '1.994841e-031'
+.elseif (N == 15)
+    .param sbbd1a = '2.440806e-001'
+    .param sbbd2a = '7.026473e-001'
+    .param sbbd3a = '1.077877e+000'
+    .param mass1a = '4.611317e-032'
+    .param mass2a = '1.927207e-031'
+    .param mass3a = '1.599981e-031'
+    .param sbbd1b = '6.480001e-002'
+    .param sbbd2b = '8.655896e-001'
+    .param sbbd3b = '1.109458e+000'
+    .param mass1b = '1.360303e-032'
+    .param mass2b = '1.357788e-031'
+    .param mass3b = '3.768418e-031'
+.elseif (N == 16)
+    .param sbbd1a = '3.541016e-001'
+    .param sbbd2a = '5.056780e-001'
+    .param sbbd3a = '1.256048e+000'
+    .param mass1a = '8.338319e-032'
+    .param mass2a = '8.807460e-032'
+    .param mass3a = '1.783968e-031'
+    .param sbbd1b = '2.440806e-001'
+    .param sbbd2b = '7.026473e-001'
+    .param sbbd3b = '1.077877e+000'
+    .param mass1b = '4.611317e-032'
+    .param mass2b = '1.927207e-031'
+    .param mass3b = '1.599981e-031'
+.elseif (N == 17)
+    .param sbbd1a = '5.400001e-002'
+    .param sbbd2a = '7.288017e-001'
+    .param sbbd3a = '9.166688e-001'
+    .param mass1a = '1.133586e-032'
+    .param mass2a = '1.190070e-031'
+    .param mass3a = '2.813141e-031'
+    .param sbbd1b = '3.541016e-001'
+    .param sbbd2b = '5.056780e-001'
+    .param sbbd3b = '1.256048e+000'
+    .param mass1b = '8.338319e-032'
+    .param mass2b = '8.807460e-032'
+    .param mass3b = '1.783968e-031'
+.elseif (N == 18)
+    .param sbbd1a = '2.057149e-001'
+    .param sbbd2a = '5.880488e-001'
+    .param sbbd3a = '9.203988e-001'
+    .param mass1a = '3.947755e-032'
+    .param mass2a = '1.536552e-031'
+    .param mass3a = '1.426387e-031'
+    .param sbbd1b = '5.400001e-002'
+    .param sbbd2b = '7.288017e-001'
+    .param sbbd3b = '9.166688e-001'
+    .param mass1b = '1.133586e-032'
+    .param mass2b = '1.190070e-031'
+    .param mass3b = '2.813141e-031'
+.elseif (N == 19)
+    .param sbbd1a = '2.998956e-001'
+    .param sbbd2a = '4.316282e-001'
+    .param sbbd3a = '1.085977e+000'
+    .param mass1a = '6.933523e-032'
+    .param mass2a = '7.707647e-032'
+    .param mass3a = '1.612004e-031'
+    .param sbbd1b = '2.057149e-001'
+    .param sbbd2b = '5.880488e-001'
+    .param sbbd3b = '9.203988e-001'
+    .param mass1b = '3.947755e-032'
+    .param mass2b = '1.536552e-031'
+    .param mass3b = '1.426387e-031'
+.elseif (N == 20)
+    .param sbbd1a = '4.628573e-002'
+    .param sbbd2a = '6.291214e-001'
+    .param sbbd3a = '7.806355e-001'
+    .param mass1a = '9.716453e-033'
+    .param mass2a = '1.059097e-031'
+    .param mass3a = '2.242748e-031'
+    .param sbbd1b = '2.998956e-001'
+    .param sbbd2b = '4.316282e-001'
+    .param sbbd3b = '1.085977e+000'
+    .param mass1b = '6.933523e-032'
+    .param mass2b = '7.707647e-032'
+    .param mass3b = '1.612004e-031'
+.endif
+
+************** SUBBAND DEFINITION END
+
+.param to6(x) = 'x*x*x*x*x*x'
+.param to8(x) = 'x*x*x*x*x*x*x*x'
+.param equisbbd(sbbda, sbbdb) =  'sbbda*(to8(1-p))+sbbdb*(1-to8(1-p))'
+.param sbbd1 = 'equisbbd(sbbd1a, sbbd1b)'
+.param sbbd2 = 'equisbbd(sbbd2a, sbbd2b)'
+.param sbbd3 = 'equisbbd(sbbd3a, sbbd3b)'
+.param mass1 = 'equisbbd(mass1a, mass1b)'
+.param mass2 = 'equisbbd(mass2a, mass2b)'
+.param mass3 = 'equisbbd(mass3a, mass3b)'
+
+******************** Schottky Barriers
+***************************************
+.param e_lsb = 'equisbbd(sbbd1a, sbbd1b)'		$'3.000278e-001'
+.param M_lsb = 'equisbbd(mass1a, mass1b)/P__q'		$'0.0034592e-10'
+.param tox_to_lambda = '2.5'	lambda = '(tox_to_lambda*Tox)/P__pi'		$'1.3e-9'
+.param K2 = '2*lambda*sqrt(M_lsb/e_lsb)/P__hbar'
+.param k1 = '2/(P__pi*P__hbar)*sqrt(M_lsb/2)'
+.param u(x) = '0.5*(1+sgn(x))'
+****************************************
+.param f(x) = '1/(1+exp(x))'
+****************************************
+.param avoid_vch = '1e-5'
+
+.param Trans(Asd, Ep) = 'U(Asd-Ep)*(U(Asd-2*e_lsb-Ep)*exp(K2*(Ep+2*e_lsb)*P__pi*(sqrt(1-2*e_lsb/(Ep+2*e_lsb))-(1-e_lsb/(Ep+2*e_lsb))))+U(-Asd+2*e_lsb+Ep)*exp(K2*Asd*(-((e_lsb+Ep)/Asd)*(P__pi/2-atan((((e_lsb+Ep)/Asd)-1)/(1/Asd*sqrt(e_lsb*e_lsb - pow(e_lsb+Ep-Asd, 2)))))-(1/Asd*sqrt(e_lsb*e_lsb - pow(e_lsb+Ep-Asd, 2)))+(1/Asd*sqrt(Ep*(2*e_lsb+Ep)))*(U(1/Asd/Asd*(e_lsb*e_lsb-(e_lsb+Ep)*(e_lsb+Ep)+Asd*(e_lsb+Ep)))*P__pi-atan((1/Asd*sqrt(Ep*(2*e_lsb+Ep)))*(1/Asd*sqrt(e_lsb*e_lsb - pow(e_lsb+Ep-Asd, 2)))/(1/Asd/Asd*(e_lsb*e_lsb-(e_lsb+Ep)*(e_lsb+Ep)+Asd*(e_lsb+Ep))))))))+U(-Asd+Ep)*1'
+
+
+.param Trans_BB_0 = 'exp(-P__pi*K2*e_lsb)'
+
+.param Trans_0(Asd) = 'U(Asd)*(U(Asd-2*e_lsb)*Trans_BB_0+U(-Asd+2*e_lsb)*exp(K2*Asd*(-e_lsb/Asd*(P__pi/2-atan((e_lsb/Asd-1)/sqrt(2*e_lsb/Asd-1)))-sqrt(2*e_lsb/Asd-1))))+U(-Asd)*1'
+
+.param Emax(x) = 'U(-0.05-x)*0.026+U(x-0.2)*(0.9323*x-0.0318)+(1-U(-0.05-x)-U(x-0.2))*(1.807*x*x+0.2715*x+0.03434)'
+.param current_sign(Vd) = 'sgn(Vd)'
+*****************************************
+
+.param Ec2_ratio = 10
+.param avoid = '1e-20' $-mgg
+
+**************** Electron charge ************
+.param TF_e_0(vch, vs, vd) = '1/(1/(1+1/(1-Trans_0(vch+avoid_vch-vd)))+1/(Trans_0(vch+avoid_vch-vs)*(2/Trans_0(vch+avoid_vch-vd)-1)))*f(-(vch-e_lsb-vs)/kT)+1/(1/(1+1/(1-Trans_0(vch+avoid_vch-vs)))+1/(Trans_0(vch+avoid_vch-vd)*(2/Trans_0(vch+avoid_vch-vs)-1)))*f(-(vch-e_lsb-vd)/kT)' $--mgg
+.param TF_e_Ec1_e(vch, vs, vd) = '1/(1/(1+1/(1-Trans(vch+avoid_vch-vd, Emax(vch-e_lsb-min(vs, vd)))))+1/(Trans(vch+avoid_vch-vs, Emax(vch-e_lsb-min(vs, vd)))*(2/Trans(vch+avoid_vch-vd, Emax(vch-e_lsb-min(vs, vd)))-1)))*f((Emax(vch-e_lsb-min(vs, vd))-(vch-e_lsb-vs))/kT)+1/(1/(1+1/(1-Trans(vch+avoid_vch-vs, Emax(vch-e_lsb-min(vs, vd)))))+1/(Trans(vch+avoid_vch-vd, Emax(vch-e_lsb-min(vs, vd)))*(2/Trans(vch+avoid_vch-vs, Emax(vch-e_lsb-min(vs, vd)))-1)))*f((Emax(vch-e_lsb-min(vs, vd))-(vch-e_lsb-vd))/kT)' $--mgg
+
+**************** Hole charge ************
+.param TF_h_0(vch, vs, vd) = '1/(1/(1+1/(1-Trans_0(-vch-avoid_vch+vd)))+1/(Trans_0(-vch-avoid_vch+vs)*(2/Trans_0(-vch-avoid_vch+vd)-1)))*f((vch+e_lsb-vs)/kT)+1/(1/(1+1/(1-Trans_0(-vch-avoid_vch+vs)))+1/(Trans_0(-vch-avoid_vch+vd)*(2/Trans_0(-vch-avoid_vch+vs)-1)))*f((vch+e_lsb-vd)/kT)'
+.param TF_h_Ec1_h(vch, vs, vd) = '1/(1/(1+1/(1-Trans(-vch-avoid_vch+vd, Emax(-vch-e_lsb+max(vs, vd)))))+1/(Trans(-vch-avoid_vch+vs, Emax(-vch-e_lsb+max(vs, vd)))*(2/Trans(-vch-avoid_vch+vd, Emax(-vch-e_lsb+max(vs, vd)))-1)))*f((Emax(-vch-e_lsb+max(vs, vd))-(-vch-e_lsb+vs))/kT)+1/(1/(1+1/(1-Trans(-vch-avoid_vch+vs, Emax(-vch-e_lsb+max(vs, vd)))))+1/(Trans(-vch-avoid_vch+vd, Emax(-vch-e_lsb+max(vs, vd)))*(2/Trans(-vch-avoid_vch+vs, Emax(-vch-e_lsb+max(vs, vd)))-1)))*f((Emax(-vch-e_lsb+max(vs, vd))-(-vch-e_lsb+vd))/kT)'
+
+.param Q_ch(vch, vs, vd) = '4/3*k1*((sqrt(Emax(-vch-e_lsb+max(vs, vd)))*TF_h_0(vch, vs, vd)+(log(1/(TF_h_Ec1_h(vch, vs, vd)/Ec2_ratio)-1)*kT-vch-e_lsb+max(vs, vd))*TF_h_Ec1_h(vch, vs, vd)/(sqrt(Emax(-vch-e_lsb+max(vs, vd)))+sqrt(log(1/(TF_h_Ec1_h(vch, vs, vd)/Ec2_ratio)-1)*kT-vch-e_lsb+max(vs, vd)))) - (sqrt(Emax(vch-e_lsb-min(vs, vd)))*TF_e_0(vch, vs, vd)+(log(1/(TF_e_Ec1_e(vch, vs, vd)/Ec2_ratio+avoid)-1)*kT+vch-e_lsb-min(vs, vd))*TF_e_Ec1_e(vch, vs, vd)/(sqrt(Emax(vch-e_lsb-min(vs, vd)))+sqrt(log(1/(TF_e_Ec1_e(vch, vs, vd)/Ec2_ratio+avoid)-1)*kT+vch-e_lsb-min(vs, vd)))))'
+**************** Current ************
+.param TF_I_e_Ec1_e(vch, vs, vd) = '1/(1/Trans(vch+avoid_vch-vs, Emax(vch-e_lsb-min(vs, vd)))+1/Trans(vch+avoid_vch-vd, Emax(vch-e_lsb-min(vs, vd)))-1)*(f((Emax(vch-e_lsb-min(vs, vd))-(vch-e_lsb-vs))/kT)-f((Emax(vch-e_lsb-min(vs, vd))-(vch-e_lsb-vd))/kT))*current_sign(V(nd, ns))' $ --mgg
+.param TF_I_h_Ec1_h(vch, vs, vd) = '1/(1/Trans(-vch-avoid_vch+vs, Emax(-vch-e_lsb+max(vs, vd)))+1/Trans(-vch-avoid_vch+vd, Emax(-vch-e_lsb+max(vs, vd)))-1)*(f((Emax(-vch-e_lsb+max(vs, vd))-(-vch-e_lsb+vs))/kT)-f((Emax(-vch-e_lsb+max(vs, vd))-(-vch-e_lsb+vd))/kT))*current_sign(V(nd, ns))' $ --mgg
+.param Ids(vch, vs, vd) = 'a_c(p) * 1/(P__pi*P__hbar)*0.5*(((1/(1/Trans_0(vch+avoid_vch-vs)+1/Trans_0(vch+avoid_vch-vd)-1)*(f(-(vch-e_lsb-vs)/kT)-f(-(vch-e_lsb-vd)/kT))*current_sign(V(nd, ns)))*Emax(vch-e_lsb-min(vs, vd))+TF_I_e_Ec1_e(vch, vs, vd)*(log(1/(TF_I_e_Ec1_e(vch, vs, vd)/Ec2_ratio+avoid)-1)*kT+vch-e_lsb-min(vs, vd)))-((1/(1/Trans_0(-vch-avoid_vch+vs)+1/Trans_0(-vch-avoid_vch+vd)-1)*(f((vch+e_lsb-vs)/kT)-f((vch+e_lsb-vd)/kT))*current_sign(V(nd, ns)))*Emax(-vch-e_lsb+max(vs, vd))+TF_I_h_Ec1_h(vch, vs, vd)*(log(1/abs(TF_I_h_Ec1_h(vch, vs, vd)/Ec2_ratio+avoid)-1)*kT-vch-e_lsb+max(vs, vd))))'
+.param a_c(p) = '0.98 * to6(1-4*p) + 0.02'
+*****************************************		
+
+
+vgnd1 mgnd 0 0
+
+* Cgs Cgd
+.param Cgs_val = '1.26e-10 * Wgate * (0.8 - 0.2*Tox + 0.015*Tox*Tox)'
+.param Cgch_val(L, Wgate, WGNR, Tox) = '(L*5.55e-11*P__epsSi) / ((1 + 1.5*Tox/Wgate) * log((5.98*Tox) / (0.8*WGNR)))'
+
+
+
+*************************
+* GNRFET Definition
+*************************
+
+* Parasitic Capacitors
+Cgs ng ns c='nRib * Cgs_val'
+Cgd ng nd c='nRib * Cgs_val'
+
+* VCCS
+gds nd ns cur='nRib * P__q*Ids(V(nch2), V(ns2), V(nd2))*current_sign(V(nd, ns))'
+
+* Vch
+cgch ng nch c='nRib * Cgch_val(L, Wgate, WGNR, Tox)'
+cbch nb nch c='nRib * Cgch_val(L, Wgate, WGNR, Tox)'
+
+ech nch mgnd  nch2 mgnd 1
+es2 ns2 mgnd ns mgnd 1
+* Vch Solver
+eg2 ng2 mgnd ng mgnd 1
+ed2 nd2 mgnd nd mgnd 1
+eb2 nb2 mgnd nb mgnd 1
+rdummy nch2 mgnd 1e15
+rdummy2 nb2 mgnd 1e15
+rdummy3 nch mgnd 1e15
+
+* Scaled by P__q
+.param Qcap(vch, vs, vd, vg, L, Wgate, WGNR, Tox) = '(-1/L)*Cgch_val(L, Wgate, WGNR, Tox)*(2*(Vg-Vch)+0.1*(Vd-Vch)+0.1*(Vs-Vch))'
+gCins mgnd nch2 cur='Qcap(V(nch2), V(ns2), V(nd2), V(ng2), L, Wgate, WGNR, Tox)'
+
+gQch nch2 mgnd cur='P__q*Q_ch(V(nch2),V( ns2), V(nd2))'
+
+
+.ends gnrfetsb
+
+.subckt gnrfetnmos nd ng ns nb nRib=4 n=12 L=15n Tox=1n sp=2n p=0 sh=0.25
+
+* Widths
+.param WGNR = '(n/2 + 0.5) * sqrt(3) * 0.144e-9';
+.param Wgate = 'WGNR + 2 * sp'
+
+* Cgs Cgd
+.param Cgs_val = '1.26e-10 * Wgate * (0.8 - 0.2*Tox + 0.015*Tox*Tox)'
+
+* Cins
+.param Cgch_val(L, Wgate, WGNR, Tox) = '(L*5.55e-11*P__epsSi) / ((1 + 1.5*Tox/Wgate) * log((5.98*Tox) / (0.8*WGNR)))'
+
+xgnrfetsb1 nd ng2 ns nb2 gnrfetsb nRib=nRib n=n L=L Tox=Tox sp=sp p=p
+eg ng2 ns poly(1) ng ns sh 1
+eb nb2 ns nb ns 1
+ech nch ns xgnrfetsb1.nch xgnrfetsb1.ns 1
+
+* Parasitic Capacitors
+Cgs ng ns c='nRib * Cgs_val'
+Cgd ng nd c='nRib * Cgs_val'
+cgch ng nch c='nRib * Cgch_val(L, Wgate, WGNR, Tox)'
+cbch nb nch c='nRib * Cgch_val(L, Wgate, WGNR, Tox)'
+
+.ends gnrfetnmos
+
+
+
+.subckt gnrfetpmos nd ng ns nb nRib=4 n=12 L=15n Tox=1n sp=2n p=0 sh=-0.25
+
+* Widths
+.param WGNR = '(n/2 + 0.5) * sqrt(3) * 0.144e-9';
+.param Wgate = 'WGNR + 2 * sp'
+
+* Cgs Cgd
+.param Cgs_val = '1.26e-10 * Wgate * (0.8 - 0.2*Tox + 0.015*Tox*Tox)'
+
+* Cins
+.param Cgch_val(L, Wgate, WGNR, Tox) = '(L*5.55e-11*P__epsSi) / ((1 + 1.5*Tox/Wgate) * log((5.98*Tox) / (0.8*WGNR)))'
+
+xgnrfetsb1 ns ng2 nd nb2 gnrfetsb nRib=nRib n=n L=L Tox=Tox sp=sp p=p
+eg ng2 ns poly(1) ng ns sh 1
+eb nb2 ns nb ns 1
+ech nch ns xgnrfetsb1.nch xgnrfetsb1.ns 1
+
+* Parasitic Capacitors
+Cgs ng ns c='nRib * Cgs_val'
+Cgd ng nd c='nRib * Cgs_val'
+cgch ng nch c='nRib * Cgch_val(L, Wgate, WGNR, Tox)'
+cbch nb nch c='nRib * Cgch_val(L, Wgate, WGNR, Tox)'
+
+.ends gnrfetpmos
+
+
+.unprotect
+.endl GNRFET

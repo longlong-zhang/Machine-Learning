@@ -1,0 +1,11 @@
+*Technology File
+.lib technology
+.param n= '12'
+.param L= '16n'
+.param Tox= '0.95n'
+.param sp= '2n'
+.param p= '0'
+.param dop= '0.001'
+.param Tox2= '20n'
+.param gates_tied= '0'
+.endl technology

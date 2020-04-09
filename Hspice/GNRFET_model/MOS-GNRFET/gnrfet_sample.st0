@@ -1,0 +1,82 @@
+***** HSPICE -- A-2008.03 32-BIT (Feb 26 2008) winnt ******
+ Input File: c:\users\18851\desktop\gnrfet_spice_models_uiuc\gnrfet_model\mos-gn
+ lic:
+ lic: FLEXlm: v8.5b
+ lic: USER:   18851                HOSTNAME: DESKTOP-D9VQJ91
+ lic: HOSTID: "d8c4976f6971 00ff1bd2f2c0 00ff96a3a468 30d16bc375c7 32d16bc375c7
+ lic: Using FLEXlm license file:
+ lic: C:\Flexlm\hspice_2007-09.lic
+ lic: Checkout 1 hspice
+ lic: License/Maintenance for hspice will expire on 31-dec-2020/2007.9
+ lic: NODE LOCKED license on hostid "d8c4976f6971 00ff1bd2f2c0 00ff96a3a468 30d1
+ lic:
+ Init: hspice initialization file: C:\synopsys\Hspice_A-2008.03\hspice.ini
+ init: begin read circuit files,  cpu clock=  8.90E-02
+       option post
+       option autost
+       option ingold   =     2.00
+       option dcon     =     1.00
+       option gshunt   =    1.000E-12
+       option rmin     =    1.000E-15
+       option abstol   =    1.000E-05
+       option absvdc   =    1.000E-04
+       option reltol   =    1.000E-02
+       option relvdc   =    1.000E-02
+       option numdgt   =     4.00
+       option pivot    =     13.0
+ init: end read circuit files,  cpu clock=  1.26E-01 memory=    204 kb
+ init: begin check errors,  cpu clock=  1.26E-01
+ init: end check errors,  cpu clock=  1.39E-01 memory=    229 kb
+ init: begin setup matrix, pivot=    13 cpu clock=  1.39E-01
+       establish matrix -- done,  cpu clock=  1.50E-01 memory=    232 kb
+       re-order matrix -- done,  cpu clock=  1.53E-01 memory=    233 kb
+ init: end setup matrix,  cpu clock=  1.61E-01 memory=    246 kb
+ sweep: voltage         voltage1         begin, #sweeps =  11
+ voltage: vdd             =    0.00E+00
+ output: c:\users\18851\desktop\gnrfet_spice_models_uiuc\gnrfet_model\mos-gnrfet
+ sweep: dc dc1    begin, #sweeps= 101 cpu clock=  1.85E-01
+ sweep: dc dc1    end,  cpu clock=  2.64E-01 memory=    246 kb
+ voltage: vdd             =    5.00E-02
+ output: c:\users\18851\desktop\gnrfet_spice_models_uiuc\gnrfet_model\mos-gnrfet
+ sweep: dc dc2    begin, #sweeps= 101 cpu clock=  2.81E-01
+ sweep: dc dc2    end,  cpu clock=  3.62E-01 memory=    246 kb
+ voltage: vdd             =    1.00E-01
+ output: c:\users\18851\desktop\gnrfet_spice_models_uiuc\gnrfet_model\mos-gnrfet
+ sweep: dc dc3    begin, #sweeps= 101 cpu clock=  3.77E-01
+ sweep: dc dc3    end,  cpu clock=  4.52E-01 memory=    246 kb
+ voltage: vdd             =    1.50E-01
+ output: c:\users\18851\desktop\gnrfet_spice_models_uiuc\gnrfet_model\mos-gnrfet
+ sweep: dc dc4    begin, #sweeps= 101 cpu clock=  4.66E-01
+ sweep: dc dc4    end,  cpu clock=  5.55E-01 memory=    246 kb
+ voltage: vdd             =    2.00E-01
+ output: c:\users\18851\desktop\gnrfet_spice_models_uiuc\gnrfet_model\mos-gnrfet
+ sweep: dc dc5    begin, #sweeps= 101 cpu clock=  5.71E-01
+ sweep: dc dc5    end,  cpu clock=  6.47E-01 memory=    246 kb
+ voltage: vdd             =    2.50E-01
+ output: c:\users\18851\desktop\gnrfet_spice_models_uiuc\gnrfet_model\mos-gnrfet
+ sweep: dc dc6    begin, #sweeps= 101 cpu clock=  6.59E-01
+ sweep: dc dc6    end,  cpu clock=  7.35E-01 memory=    246 kb
+ voltage: vdd             =    3.00E-01
+ output: c:\users\18851\desktop\gnrfet_spice_models_uiuc\gnrfet_model\mos-gnrfet
+ sweep: dc dc7    begin, #sweeps= 101 cpu clock=  7.55E-01
+ sweep: dc dc7    end,  cpu clock=  8.34E-01 memory=    246 kb
+ voltage: vdd             =    3.50E-01
+ output: c:\users\18851\desktop\gnrfet_spice_models_uiuc\gnrfet_model\mos-gnrfet
+ sweep: dc dc8    begin, #sweeps= 101 cpu clock=  8.49E-01
+ sweep: dc dc8    end,  cpu clock=  9.33E-01 memory=    246 kb
+ voltage: vdd             =    4.00E-01
+ output: c:\users\18851\desktop\gnrfet_spice_models_uiuc\gnrfet_model\mos-gnrfet
+ sweep: dc dc9    begin, #sweeps= 101 cpu clock=  9.47E-01
+ sweep: dc dc9    end,  cpu clock=  1.02E+00 memory=    246 kb
+ voltage: vdd             =    4.50E-01
+ output: c:\users\18851\desktop\gnrfet_spice_models_uiuc\gnrfet_model\mos-gnrfet
+ sweep: dc dc10   begin, #sweeps= 101 cpu clock=  1.04E+00
+ sweep: dc dc10   end,  cpu clock=  1.12E+00 memory=    246 kb
+ voltage: vdd             =    5.00E-01
+ output: c:\users\18851\desktop\gnrfet_spice_models_uiuc\gnrfet_model\mos-gnrfet
+ sweep: dc dc11   begin, #sweeps= 101 cpu clock=  1.13E+00
+ sweep: dc dc11   end,  cpu clock=  1.21E+00 memory=    246 kb
+ sweep: voltage         voltage         1 end
+>info:         ***** hspice job concluded
+ Init: hspice initialization file: C:\synopsys\Hspice_A-2008.03\hspice.ini
+ lic: Release hspice token(s)

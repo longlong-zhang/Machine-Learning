@@ -1,0 +1,437 @@
+ ****** HSPICE -- A-2008.03 32-BIT (Feb 26 2008) winnt ******                   
+  Copyright (C) 2008 Synopsys, Inc. All Rights Reserved.                        
+  Unpublished-rights reserved under US copyright laws.
+  This program is protected by law and is subject to the 
+  terms and conditions of the license agreement found in:
+    C:\synopsys\Hspice_A-2008.03\license.warn
+  Use of this program is your acceptance to be bound by this 
+  license agreement. HSPICE is the trademark of Synopsys, Inc.
+  Input File: c:\users\18851\desktop\spice\ipmtj\mtj_write.sp                   
+ Init: read install configuration file: C:\synopsys\Hspice_A-2008.03\meta.cfg
+ Init: hspice initialization file: C:\synopsys\Hspice_A-2008.03\hspice.ini
+
+
+
+
+ ************************************************************************************
+ ** title:  mtj_write.sp
+ ** author: jongyeon kim, vlsi research lab @ umn
+ ** email:  kimx2889@umn.edu
+ ************************************************************************************
+ ** this run file simulates the dynamic motion of  mtj.
+ ** # instruction for simulation
+ ** 1. set the mtj dimensions and material parameters.
+ ** 2. select anisotropy(ima/pma) and initial state of free layer(p/ap).
+ ** 3. adjust bias voltage for read/write operation.
+ ** ex. aptop switching: positive voltage @ ini='1'
+ **     ptoap switching: negative voltage @ ini='0'  
+ ************************************************************************************
+ ** # description of parameters
+ ** lx,ly,lz: width, length, and thickness of free layer
+ ** tox: mgo thickness
+ ** ms0:saturation magnetizaion at 0k
+ ** p0: polarization factor at 0k 
+ ** alpha: damping factor
+ ** temp: temperature
+ ** ma: magnetic anisotropy (ma=0:in-plane,ma=1:perpendicular)
+ **     also sets magnetization in pinned layer, ma=0:[0,1,0],ma=1:[0,0,1]
+ ** ini: initial state of free layer (ini=0:parallel,ini=1:anti-parallel)
+ ** tc: critical thickness that needs to be smaller than lz, 
+ **     single interface: tc=1.5nm, double interface: tc=3nm
+ ************************************************************************************
+
+ .include 'mtj_model.inc'
+ ********************************************************************************************************
+ ********************************************************************************************************
+ ** title:  mtj_model.inc
+ ** author: jongyeon kim, vlsi research lab @ umn
+ ** email:  kimx2889@umn.edu
+ ********************************************************************************************************
+ ** this library includes llg_solver.inc, resistance.inc, thermal_fluctuation.inc, and heat_diffusion.inc.
+ ** at the given voltage across the mtj, dynamic current and resistance are generated.
+ ********************************************************************************************************
+
+ .include 'llg_solver.inc'
+ ************************************************************************************
+ ************************************************************************************
+ ** title:  llg_solver.inc
+ ** author: jongyeon kim, vlsi research lab @ umn
+ ** email:  kimx2889@umn.edu
+ ************************************************************************************
+ ** at the given mtj dimensions and material parameters, the dynamic tr motion is
+ ** implemented by llg equation according to the type of mtj. 
+ ************************************************************************************
+
+ .subckt llg mx my mz is ias tmp thi lx='65n' ly='130n' lz='1.8n' ms0='1075' p0='0.715' alpha='0.01' ma='0.0' ini='0' tc='1.5n'
+
+ *** physical parameters **************************
+ .param pi='355/113'
+ .param gamma='2.8e6*2*pi'
+ .param h='6.625e-27/(2*pi)'
+ .param e='1.602e-19'
+ .param kb='1.38e-16'
+
+
+ *** temp. dependent parameters *******************
+ .param tcurie='1420'
+ .param beta='0.4'
+ .param asp='2e-5'
+ e_ms ms 0 vol='ms0*(1-v(tmp)/tcurie)^beta'
+ e_p  p  0 vol='p0*(1-asp*v(tmp)^1.5)'
+
+
+ *** magnetization of pinned layer ****************
+ .param mpx='0.0'
+ .param mpy='1-ma'
+ .param mpz='ma'
+
+
+ *** shape anisotropy - demagnetizing factors *****
+ .param nsh(a,b,c)='1/pi*((b^2-c^2)/(2*b*c)*log((sqrt(a^2+b^2+c^2)-a)/(sqrt(a^2+b^2+c^2)+a))+(a^2-c^2)/(2*a*c)*log((sqrt(a^2+b^2+c^2)-b)/(sqrt(a^2+b^2+c^2)+b))+b/(2*c)*log((sqrt(a^2+b^2)+a)/(sqrt(a^2+b^2)-a))+a/(2*c)*log((sqrt(a^2+b^2)+b)/(sqrt(a^2+b^2)-b))+c/(2*a)*log((sqrt(b^2+c^2)-b)/(sqrt(b^2+c^2)+b))+c/(2*b)*log((sqrt(a^2+c^2)-a)/(sqrt(a^2+c^2)+a))+2*atan((a*b)/(c*sqrt(a^2+b^2+c^2)))+(a^3+b^3-2*c^3)/(3*a*b*c)+(a^2+b^2-2*c^2)/(3*a*b*c)*sqrt(a^2+b^2+c^2)+c/(a*b)*(sqrt(a^2+c^2)+sqrt(b^2+c^2))-((b^2+a^2)^(3/2)+(b^2+c^2)^(3/2)+(a^2+c^2)^(3/2))/(3*a*b*c))'
+
+ .param nx='4*pi*nsh(lz,ly,lx)'
+ .param ny='4*pi*nsh(lz,lx,ly)'
+ .param nz='4*pi*nsh(ly,lx,lz)'
+
+
+ *** initialization ********************************
+ .param msi='ms0*(1-tmp0/tcurie)^beta'
+ .param ipma='(2*pi*((tc/lz)-(nz/(4*pi)))*msi*msi*lx*ly*lz*1e6)/(kb*tmp0)'
+ e_thste thste 0 vol='ipma'
+
+ .param thi='asin((1/(2*ipma))^(1/2))'
+ e_thi thi 0 vol='asin((1/(2*ipma))^(1/2))'
+
+ .param mx0='0.0'
+ .param my0='sin(thi)'
+ .param mz0='(1-2*ini)*cos(thi)'
+
+ .ic v(mx)='mx0'
+ .ic v(my)='my0'
+ .ic v(mz)='mz0'
+
+
+ *** demagnetizating field for in-plane mtj ********
+ e_hdx hdx 0 vol='-nx*v(mx)*v(ms)'
+ e_hdy hdy 0 vol='-ny*v(my)*v(ms)'
+ e_hdz hdz 0 vol='-nz*v(mz)*v(ms)'
+
+
+ *** interfacial anisotropy field for perpendicular mtj ****
+ e_ki ki 0 vol='2*pi*v(ms)*v(ms)*tc'
+ e_hiz hiz 0 vol='2*v(ki)/(v(ms)*lz)*v(mz)'
+
+
+ *** effective anisotropy field ********************
+ e_hefx hefx 0 vol='v(hdx)'
+ e_hefy hefy 0 vol='v(hdy)'
+ e_hefz hefz 0 vol='v(hdz)+ma*v(hiz)'
+
+
+ *** polarized spin current (j=ias/lx/ly) **********
+ r_is is 0 'v(ias)*v(p)*h/(2*e*lx*ly*lz*1e6*v(ms))'
+
+ *** llg solving for mx, my, mz ********************
+ c_mx mx 0 '(1+alpha*alpha)/gamma'
+ g_dmx_prec 0 mx cur='-(v(my)*v(hefz)-v(hefy)*v(mz))'
+ g_dmx_damp 0 mx cur='-alpha*(v(my)*(v(mx)*v(hefy)-v(hefx)*v(my))-(v(mz)*v(hefx)-v(hefz)*v(mx))*v(mz))'
+ g_dmx_torq 0 mx cur='v(is)*(v(my)*(v(mx)*mpy-mpx*v(my))-(v(mz)*mpx-mpz*v(mx))*v(mz))'
+
+ c_my my 0 '(1+alpha*alpha)/gamma'
+ g_dmy_prec 0 my cur='-(v(mz)*v(hefx)-v(hefz)*v(mx))'
+ g_dmy_damp 0 my cur='-alpha*(v(mz)*(v(my)*v(hefz)-v(hefy)*v(mz))-(v(mx)*v(hefy)-v(hefx)*v(my))*v(mx))'
+ g_dmy_torq 0 my cur='v(is)*(v(mz)*(v(my)*mpz-mpy*v(mz))-(v(mx)*mpy-mpx*v(my))*v(mx))'
+
+ c_mz mz 0 '(1+alpha*alpha)/gamma'
+ g_dmz_prec 0 mz cur='-(v(mx)*v(hefy)-v(hefx)*v(my))'
+ g_dmz_damp 0 mz cur='-alpha*(v(mx)*(v(mz1)*v(hefx)-v(hefz)*v(mx))-(v(my)*v(hefz)-v(hefy)*v(mz1))*v(my))'
+ g_dmz_torq 0 mz cur='v(is)*(v(mx)*(v(mz1)*mpx-mpz*v(mx))-(v(my)*mpz-mpy*v(mz1))*v(my))'
+ e_mz1 mz1 0 vol='v(mz)' max='cos(v(thi))' min='-cos(v(thi))'
+
+ .ends
+
+ .include 'resistor.inc'
+ ************************************************************************************
+ ************************************************************************************
+ ** title:  resistance.inc
+ ** author: jongyeon kim, vlsi research lab @ umn
+ ** email:  kimx2889@umn.edu
+ ************************************************************************************
+ ** the dependence of resistance on  relative angle, temperature, and bias voltage
+ ** is implemented.
+ ************************************************************************************
+
+ .subckt ra n_plus n_minus mx my mz tmp thi lx='65n' ly='130n' p0='0.715' ra0='5.4' ma='0.0'
+
+
+ *** spherical coordinate ***
+ e_thip thip 0 vol='(1-ma)*acos((1-ma)*0.999*v(my)/((v(mx)^2+v(my)^2)^(1/2)))'
+ e_th1 th1 0 vol='((v(my)^2+v(mz)^2)^(1/2))'
+ e_th2 th2 0 vol='v(mz)/v(th1)' max=1 min=-1
+ e_thp thp 0 vol='3.14/2*(1-v(th2))'
+
+ e_th th 0 vol='v(thip)+v(thp)' max='355/113-v(thi)' min='v(thi)'
+ e_phi phi 0 vol='(1-ma)*atan(v(mx)/v(mz))+ma*atan(v(my)/v(mx))'
+
+
+ *** temp. dependent parameters *******************
+ .param asp='2e-5'
+
+ *** rp *******************************************
+ .param ra='ra0*1e-12'   $ [ohm*m2]
+ .param rp='ra/(lx*ly)'
+
+ *** tmr ******************************************
+ .param v0='0.65'
+ e_tmr0 tmr0 0 vol='2*p0^2*(1-asp*v(tmp)^1.5)^2/(1-p0^2*(1-asp*v(tmp)^1.5)^2)*100'
+ e_tmr tmr 0 vol='v(tmr0)/(1+((v(n_plus)-v(n_minus))/v0)^2)'
+ e_rap rap 0 vol='(v(tmr)/100+1)*rp'
+
+ *** r(v,tmp,th) **********************************
+ r_mtj n_plus n_minus '(1+cos(v(th)))*(rp-v(rap))/2+v(rap)'
+ e_rmtj rmtj 0 vol='(1+cos(v(th)))*(rp-v(rap))/2+v(rap)'
+
+
+ .ends
+ .include 'heatdf.inc'
+ ************************************************************************************
+ ************************************************************************************
+ ** title:  heatdf.inc
+ ** author: jongyeon kim, vlsi research lab @ umn
+ ** email:  kimx2889@umn.edu
+ ************************************************************************************
+ ** joule heating in the mtj increases the internal temperature resulting in larger hf. 
+ ** also, both ms and p have a temperature dependency.
+ ** the  tmp is fed to llg_solver.inc and resistance.inc.
+ ************************************************************************************
+
+ .subckt hd ihd tmp lx='lx' ly='ly' lz='lz' tmp0='tmp0'
+
+ *** unit length for diffusion ******************
+ .param dl='lz/7*1e7'  $ [cm]
+
+ *** volumetric specific heat capacity **********
+ *** f:fe, o:mgo ********************************
+ .param cvf='3.54'     $ [j/cm3*k]
+ .param cvo='0.004'  
+
+ *** heat conductivity **************************
+ .param kf='0.802'     $ [w/cm*k]
+ .param ko='0.6'
+
+ *** rc conversion for diffusion equation *******
+ .param cf='cvf'
+ .param co='cvo'
+ .param rf='dl*dl/kf'
+ .param ro='dl*dl/ko'
+
+ *** head diffusion by distributed rc model *****
+ rl01 tmp l1 'rf'
+ rl12 l1 l2 'rf'
+ rl23 l2 l3 'rf'
+ rl34 l3 l4 'rf'
+ rl45 l4 l5 'rf'
+ rl56 l5 l6 'rf'
+ rl67 l6 l7 'rf'
+ vl l7 0 'tmp0'
+
+ cl0 tmp 0 'cf'
+ cl1 l1 0 'cf'
+ cl2 l2 0 'cf'
+ cl3 l3 0 'cf'
+ cl4 l4 0 'cf'
+ cl5 l5 0 'cf'
+ cl6 l6 0 'cf'
+
+ .param rho='1e-5'  $ [ohm*cm]
+ r_ihd ihd 0 '1'
+ g_tmp 0 tmp cur='rho*(v(ihd)/(lx*ly*1e4))^2/kf'
+
+
+ rm01 tmp m1 'ro'
+ rm02 m1 m2 'ro'
+ rr01 m2 r1 'rf'
+ rr12 r1 r2 'rf'
+ rr23 r2 r3 'rf'
+ rr34 r3 r4 'rf'
+ rr45 r4 r5 'rf'
+ rr56 r5 r6 'rf'
+ rr67 r6 r7 'rf'
+ vr r7 0 'tmp0'
+
+ cm0 tmp 0 'co'
+ cm1 m1 0 'co'
+ cr0 m2 0 'cf'
+ cr1 r1 0 'cf'
+ cr2 r2 0 'cf'
+ cr3 r3 0 'cf'
+ cr4 r4 0 'cf'
+ cr5 r5 0 'cf'
+ cr6 r6 0 'cf'
+
+
+ .ic v(l1)='tmp0'
+ .ic v(l2)='tmp0'
+ .ic v(l3)='tmp0'
+ .ic v(l4)='tmp0'
+ .ic v(l5)='tmp0'
+ .ic v(l6)='tmp0'
+
+ .ic v(tmp)='tmp0'
+ .ic v(m1)='tmp0'
+ .ic v(m2)='tmp0'
+
+ .ic v(r1)='tmp0'
+ .ic v(r2)='tmp0'
+ .ic v(r3)='tmp0'
+ .ic v(r4)='tmp0'
+ .ic v(r5)='tmp0'
+ .ic v(r6)='tmp0'
+
+
+ .ends
+
+ .subckt mtj e1 e2 lx='65n' ly='130n' lz='1.8n' ms0='1075' p0='0.715' alpha='0.01' tmp0='300' ra0='5.4' ma='0.0' ini='1' tc='1.5n'
+
+ xra   ex e2 mx my mz tmp thi ra lx='lx' ly='ly' p0='p0' ra0='ra0' ma='ma' 
+ xllg  mx my mz is ias tmp thi llg lx='lx' ly='ly' lz='lz' ms0='ms0' p0='p0' alpha='alpha' ma='ma' ini='ini' tc='tc'
+ xhd   ihd tmp hd lx='lx' ly='ly' lz='lz' tmp0='tmp0'
+
+
+ *** internal top electrode of mtj ***************
+ ve1 e1 ex 0
+
+
+ *** asymetry of write current ************************
+ *** positive bias:ias=iatp, negative bias:ias=ipta ***
+ *** iatp will generate more spin current. ************ 
+ .param iatp='1'
+ .param ipta='1/1.5'
+ e_ias ias 0 vol='(1+(v(e1)-v(e2))/abs(v(e1)-v(e2)))*(iatp-ipta)/2+ipta'
+
+
+ *** charge current passing through mtj stack *************
+ *** imtj is fed to llg and head_diffusion models *********
+ g_imtj1 0 is cur='-i(ve1)'
+ g_imtj2 0 ihd cur='-i(ve1)'
+
+
+
+ .ends
+
+ *** options ************************************************************************
+ .option post
+ .save
+
+ *** voltage biasing to mtj *********************************************************
+ .param vmtj='0.6'
+ v1 1 0 'vmtj'
+ xmtj1 1 0 mtj lx='65n' ly='65n' lz='1.48n' ms0='1210' p0='0.69' alpha='0.006' tmp0='358' ra0='5' ma='1' ini='1' tc='1.5n'
+
+ *** analysis ***********************************************************************
+ .param pw='10ns' 
+ .tran 1p 'pw' start=1.0e-18  uic $ sweep vmtj 0.4 0.5 0.01
+
+ .meas tsw0 when v(xmtj1.xllg.mz)='0'
+ .meas iwr find i(xmtj1.ve1) at 1ns
+ .meas thermal_stability find v(xmtj1.xllg.thste) at 1ns
+
+ .end
+
+ ***********************************************************************
+ ** runlvl is invoked, you can disable it by:
+      a) Add option runlvl=0 to your current simulation job.
+      b) Copy $installdir/hspice.ini to your HOME directory and
+         customize it by adding option runlvl=0, which disables
+         it for all of your simulation jobs.
+      c) Re-invoke $installdir/bin/config program and unselect the
+         option runlvl setting in box 'hspice.ini' which disables
+         it for whole group simulation jobs.
+
+ ** runlvl is invoked, some options are ignored or automatically set:
+      Options below are automatically set(user setting will overwrite them):
+      if runlvl=6,            .option bypass=0
+      if runlvl=[1|2|3|4|5],  .option bypass=2
+
+      Options below are ignored, they are replaced by automated algorithms:
+        lvltim    dvdt      ft    fast   trtol  absvar  relvar
+          relq  chgtol    dvtr    imin    itl3    rmax
+
+ ** runlvl is invoked, actual option value used by HSPICE are:
+       runlvl= 3       bypass= 2      mbypass=   2.00   bytol= 100.00u
+ ***********************************************************************
+
+1****** HSPICE -- A-2008.03 32-BIT (Feb 26 2008) winnt ******                   
+ ******  
+ *******************************************************************************
+  ******  circuit name directory                                                
+ ******  
+ circuit number to circuit name directory
+   number circuitname                     definition         multiplier
+        0 main circuit
+        1 xmtj1.                          mtj                1.00 
+        2 xmtj1.xra.                      ra                 1.00 
+        3 xmtj1.xllg.                     llg                1.00 
+        4 xmtj1.xhd.                      hd                 1.00 
+ **warning**     4:rl01            defined in subckt hd               resistance limited to   1.000E-05
+
+
+
+ **warning** in element=  4:cl0              defined in subckt hd              
+     capacitance =    3.54     >= 0.1 farad, please verify it.
+
+
+ 
+
+ **warning** the following singular supplies were terminated to 1 meg resistor 
+   supply       node1            node2
+  e_ias                   1:ias              defined in subckt mtj                   0:0                defined in subckt 0               
+  e_phi                   2:phi              defined in subckt ra                    0:0                defined in subckt 0               
+  e_rmtj                  2:rmtj             defined in subckt ra                    0:0                defined in subckt 0               
+  e_thip                  2:thip             defined in subckt ra                    0:0                defined in subckt 0               
+  e_thp                   2:thp              defined in subckt ra                    0:0                defined in subckt 0               
+  e_p                     3:p                defined in subckt llg                   0:0                defined in subckt 0               
+  e_thste                 3:thste            defined in subckt llg                   0:0                defined in subckt 0               
+      
+  Opening plot unit= 79
+ file=c:\users\18851\desktop\spice\ipmtj\mtj_write.pa0                         
+
+ ******  
+ *******************************************************************************
+  ******  transient analysis               tnom=  25.000 temp=  25.000          
+ ******  
+
+**warning** measure results may be incorrect
+       since initial start time is non-zero.
+   tsw0= failed
+   iwr=  3.1782E-04
+   thermal_stability=  7.2883E+01
+
+          ***** job concluded
+1****** HSPICE -- A-2008.03 32-BIT (Feb 26 2008) winnt ******                   
+ ******  
+ *******************************************************************************
+  ******  job statistics summary           tnom=  25.000 temp=  25.000          
+ ******  
+
+           total memory used        394 kbytes
+
+  # nodes =      49 # elements=      85
+  # diodes=       0 # bjts    =       0 # jfets   =       0 # mosfets =       0
+  # va device =       0
+
+    analysis           time    # points   tot. iter  conv.iter
+
+    op point           0.00           1           0
+    transient          0.23       10001        4388        1457 rev=        99
+    readin             0.03
+    errchk             0.01
+    setup              0.01
+    output             0.00
+           total cpu time          0.28 seconds
+           total elapsed time         1 seconds
+               job started at  23:50:07 03/28/2020
+               job ended   at  23:50:07 03/28/2020
+
+
+ Init: hspice initialization file: C:\synopsys\Hspice_A-2008.03\hspice.ini

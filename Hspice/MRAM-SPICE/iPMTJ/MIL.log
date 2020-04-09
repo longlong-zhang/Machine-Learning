@@ -1,0 +1,19 @@
+pnlAddPane();
+nil
+1
+designOpen("c:\\users\\18851\\desktop\\spice\\ipmtj\\mtj_write.sp");
+"D0"
+t
+pnlAddCurve(1, node(D0,"A0","v(0)"), node(D0,"A0","TIME"));
+nil
+pnlAddCurve(1, node(D0,"A0","v(1)"), node(D0,"A0","TIME"));
+nil
+pnlAddCurve(1, node(D0,"A0","i(v1)"), node(D0,"A0","TIME"));
+nil
+pnlUnselectPane(1, 0);
+nil
+pnlSelectPane(1);
+nil
+pnlDeletePane(1, 1);
+nil
+nil

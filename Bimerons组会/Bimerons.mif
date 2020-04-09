@@ -1,0 +1,360 @@
+# MIF 2.1
+# DESCRIPTION: HIGH-SPEED SKYRMIONIC RACETRACK MEMORY (HSRM) PROJECT
+# DATE CREATED: Tue Dec 17 00:00:00 2013
+# LAST UPDATED: Sun Jul 15 22:12:54 2017
+# ------------------------------------------------------------
+# WANG, JUNLIN
+# PHD CANDIDATE, UNIVERSITY OF YORK
+# E-MAIL: JUNLIN.WANG@YORK.AC.UK
+# ------------------------------------------------------------
+# ZHANG, XICHAO
+# PHD CANDIDATE, SHINSHU-U; RONPAKU FELLOW, JSPS; RA, HKU
+# E-MAIL: XICHAOZHANG@GMAIL.COM
+# HTTP://ORCID.ORG/0000-0001-9656-9696
+# ------------------------------------------------------------
+
+# SYSTEM RANDOM SEED
+RandomSeed 777
+
+# 1 FOR COMPUTEING INITIAL M, 0 FOR SIMULATION
+Parameter COMPUTE_INITIAL_M 0
+
+# DEMAGNETIZATION
+# 1 FOR INCLUDED, 0 FOR NEGLECTED
+set Demag 1
+
+# DATA NORMALIZATION
+# 1 FOR NORMALIZATION, 0 FOR OUTPUT IN A/m
+set normalize_aveM_output 1
+
+# BASENAME
+set basename_Relaxation INITIAL
+set basename_Run HSRM
+
+# PHYSICAL CONSTANTS
+set pi [expr 4*atan(1.0)]          ;# Pi
+set mu0 [expr 4*$pi*1e-7]          ;# Vacuum permeability
+set hbar [expr {1.054571726e-34}]  ;# Reduced Planck constant
+set ec [expr {1.602176565e-19}]    ;# Elementary charge
+
+# SIMULATION WORLD
+set xlength  1000.0e-9 ;# m
+set ylength   80.0e-9 ;# m
+set thickness  0.4e-9 ;# m
+
+# CELL SIZE
+set xycellsize      2e-9 ;# m
+set zcellsize $thickness ;# m
+
+# SATURATION MAGNETIZATION
+set Ms 580.0e3 ;# A/m
+
+# EXCHANGE STIFFNESS
+set A 15.0e-12 ;# J/m
+
+# DZYALOSHINSKI-MORIYA INTERACTION
+set D 3.0 ;# mJ/m^2
+
+# UNIAXIAL ANISOTROPY
+# SPHERICAL COORDS
+set K      0.2e6 ;# J/m^3
+set Ktheta 0.0   ;# Degrees
+set Kphi   0.0   ;# Degrees
+
+# The profile of Ku
+set Kuf    0.0e6;
+set Kuw    50e-9;
+
+# FIXED APPLIED FIELD
+set Happx 0.0 ;# mT
+set Happy 0.0 ;# mT
+set Happz 0.0 ;# mT
+
+# INITIAL MAGNETIZATION
+# CARTESIAN COORDS
+# FM STATE (m = +e_z)
+set m0x 0.0
+set m0y 1.0
+set m0z 0.0
+
+# DAMPING COEFFICIENT
+set alpha_CPP 0.3
+
+# GYROMAGNETIC RATIO
+set gyromagnetic_ratio_CPP 28e9 ;# Hz/T, i.e., As/kg (28 GHz/T)
+
+# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+# VERTICAL SPIN-POLARIZED CURRENTS (CPP)
+set method_CPP rkf54
+set do_precess_CPP 1
+set allow_signed_gamma_CPP 0
+set gamma_G_CPP [expr {$gyromagnetic_ratio_CPP*$pi*2.0*$mu0}]
+set current_density_CPP 1e11;# A/m^2
+set Polarization_CPP 0.08
+set theta_CPP  90.00 ;# Polarization direction,
+set phi_CPP   270.00 ;# in spherical coordinates (degrees)
+set Lambda_CPP 1.0
+set xi_CPP 0.0 ;# Amplitude of the OOP torque relative to the IP one
+set eps_prime_CPP [expr {0.5*$xi_CPP*$Polarization_CPP}] ;# Secondary spin transfer term
+# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+# # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # # #
+# START CRITERIA
+set start_dm_CPP 0.01
+
+# STOPPING CRITERIA
+set stopping_dm_dt_CPP 1.0e-19
+
+# STOPPING TIME
+set stopping_time_CPP 10e-12 ;# 10 ps
+set stage_count_CPP   1000    ;# 10 ps x 1000 = 10000 ps
+
+# # # # # # # # # # # # # # # # # # # # # # #
+# # # # # # OXS EXTENSION OBJECTS # # # # # #
+# # # # # # # # # # # # # # # # # # # # # # #
+
+# SIMULATION WORLD
+Specify Oxs_BoxAtlas:Layer1 [subst {
+  xrange {0.0 $xlength}
+  yrange {0.0 $ylength}
+  zrange {0.0 $thickness}
+}]
+
+
+
+Specify Oxs_MultiAtlas:atlas [subst {
+  atlas :Layer1
+}]
+
+# DISCRETIZATION
+Specify Oxs_RectangularMesh:mesh [subst {
+  cellsize {$xycellsize $xycellsize $zcellsize}
+  atlas :atlas
+}]
+
+# SATURATION MAGNETIZATION
+Specify Oxs_AtlasScalarField:Ms [subst {
+    atlas :atlas
+    values {
+      Layer1 $Ms
+    }
+}]
+
+# EXCHANGE STIFFNESS
+Specify Oxs_Exchange6Ngbr:HeisenbergEx [subst {
+  atlas :atlas
+  default_A $A
+  A {
+    Layer1 Layer1 $A
+  }
+}]
+
+# DZYALOSHINSKI-MORIYA INTERACTION
+set DD [expr {$D/1000}]
+
+Specify Oxs_DMExchange6Ngbr:DMEx [subst {
+  default_D $DD
+  atlas :atlas
+  D {
+    Layer1 Layer1 $DD
+  }
+}]
+
+Specify Oxs_ScriptScalarField:Ku [subst {
+  atlas :atlas
+  script {Anisotropy_Geometry}
+  script_args { rawpt }
+}]
+
+
+proc Anisotropy_Geometry { xrel yrel zrel } {
+  global K Kuf Kuw
+set ratio [expr {($Kuf-$K)/$Kuw}]
+set kuw1  [expr {150e-9+$Kuw}]
+if { ($xrel >= 150e-9)&&($xrel <= $kuw1)} {return [expr {$K+$ratio*($xrel-150e-9)}]} else {return "$K"}
+}
+
+
+
+# UNIAXIAL ANISOTROPY
+set Kthetar [expr ($Ktheta/180.0)*$pi] ; # Radians
+set Kphir [expr ($Kphi/180.0)*$pi]     ; # Radians
+set Kx [expr (sin($Kthetar))*(cos($Kphir))]
+set Ky [expr (sin($Kthetar))*(sin($Kphir))]
+set Kz [expr (cos($Kthetar))]
+
+
+Specify Oxs_UniaxialAnisotropy:PMA [subst {
+  K1 :Ku
+  axis { Oxs_UniformVectorField {
+    norm 1.0
+    vector {1 0 0}
+  }}
+}]
+
+
+
+
+# FIXED APPLIED FIELD
+Specify Oxs_FixedZeeman:Happ [subst {
+  multiplier [expr {0.001/$mu0}]
+  field { Oxs_AtlasVectorField {
+    atlas :atlas
+    values {
+    Layer1 {$Happx $Happy $Happz}
+    }
+  }}
+}]
+
+# DEMAGNETIZATION
+if {$Demag} {
+Specify Oxs_Demag {}
+} else {
+# NO DEMAGNETIZATION
+}
+
+# FM PROFILE
+Specify Oxs_UniformVectorField:FMProfile [subst {
+  vector {$m0x $m0y $m0z}
+  norm 1
+}]
+
+# SKYRMION PROFILE
+Specify Oxs_ScriptVectorField:SKProfile [subst {
+  atlas :atlas
+  script A_SKYRMION_AT_THE_FILM_CENTER
+  norm  1
+}]
+
+proc A_SKYRMION_AT_THE_FILM_CENTER { xrel yrel zrel } {
+  global pi xlength ylength xyscale
+  set xyratio [expr {$xlength/$ylength}]
+  set xrad [expr {$xyratio*2.0*($xrel-0.45)+$xyratio*2.0*(-0.5)}]
+  set yrad [expr {2.0*$yrel+2.0*(-0.5)}]
+  set xrad [expr {$xrad}]
+  set r [expr sqrt($xrad*$xrad+$yrad*$yrad)]
+  set r_mod [expr {$r}]
+  set sinTHETAr [expr {+1.0*sin($pi*(2.0*($r_mod)))}]
+  set cosTHETAr [expr {-1.0*cos($pi*(2.0*($r_mod)))}]
+  set phi [expr {atan2($yrad, $xrad)}]
+  set PHI [expr {1.0*$phi}]
+  set sinPHIr [expr {sin($PHI)}]
+  set cosPHIr [expr {cos($PHI)}]
+  if {$r_mod >= 0.50} {return "1.0 0.0 0.0"}
+  if {$r_mod < 0.50} {return "-1.0 0.0 0.0"}
+}
+
+# INITIAL MAGNETIZATION STATE
+Specify Oxs_AtlasVectorField:FMm0 [subst {
+  atlas :atlas
+  norm 1
+  values {
+    Layer1 :FMProfile
+  }
+}]
+
+Specify Oxs_AtlasVectorField:SKm0 [subst {
+  atlas :atlas
+  norm 1
+  values {
+    Layer1 :SKProfile
+  }
+}]
+
+# # # # # # # # # # # # # # # # # # # # # # #
+# # # # # # # # # # # # # # # # # # # # # # #
+# # # # # # # # # # # # # # # # # # # # # # #
+
+if {!$COMPUTE_INITIAL_M} {
+
+set thetar_CPP [expr ($theta_CPP/180.0)*$pi]
+set phir_CPP [expr ($phi_CPP/180.0)*$pi]
+
+# CPP EVOLVER FOR MOTION
+Specify Oxs_SpinXferEvolve:evolve [subst {
+  method $method_CPP
+  do_precess $do_precess_CPP
+  alpha $alpha_CPP
+  gamma_G $gamma_G_CPP
+  allow_signed_gamma $allow_signed_gamma_CPP
+  start_dm $start_dm_CPP
+  mp {[expr {sin($thetar_CPP)*cos($phir_CPP)}]
+      [expr {sin($thetar_CPP)*sin($phir_CPP)}]
+      [expr {cos($thetar_CPP)}]}
+  J $current_density_CPP
+  J_profile J_profile_CPP
+  J_profile_args total_time
+  P $Polarization_CPP
+  Lambda $Lambda_CPP
+  eps_prime $eps_prime_CPP
+}]
+
+# TIME DRIVER
+Specify Oxs_TimeDriver [subst {
+  basename $basename_Run
+  evolver :evolve
+  mesh :mesh
+  Ms :Ms
+  m0 { Oxs_FileVectorField {
+    atlas :atlas
+    file "Bimeron(Left).omf"
+    norm 1.0
+  }}
+  stopping_dm_dt $stopping_dm_dt_CPP
+  stopping_time $stopping_time_CPP
+  stage_count $stage_count_CPP
+  stage_iteration_limit 0
+  total_iteration_limit 0
+  normalize_aveM_output $normalize_aveM_output
+  scalar_output_format "%#.8g"
+  scalar_field_output_format {text "%#.8g"}
+  vector_field_output_format {text "%#.8g"}
+}]
+
+Destination archive mmArchive
+Schedule DataTable archive stage 1
+Schedule "Oxs_TimeDriver::Magnetization" archive stage 1
+
+} else {
+
+# # # # # # # # # # # # # # # # # # # # # # #
+# # # # # # # # # # # # # # # # # # # # # # #
+# # # # # # # # # # # # # # # # # # # # # # #
+
+# EVOLVER FOR RELAXTION
+Specify Oxs_CGEvolve:evolve {}
+
+# DRIVER
+Specify Oxs_MinDriver [subst {
+  basename $basename_Relaxation
+  evolver :evolve
+  stopping_mxHxm 1.00
+  mesh :mesh
+  m0 :SKm0
+  Ms :Ms
+  scalar_output_format "%#.8g"
+  scalar_field_output_format {text "%#.8g"}
+  vector_field_output_format {text "%#.8g"}
+}]
+
+Destination archive mmArchive
+Schedule "Oxs_MinDriver::Magnetization" archive stage 1
+
+}
+
+# # # # # # # # # # # # # # # # # # # # # # #
+# # # # # # # # # # # # # # # # # # # # # # #
+# # # # # # # # # # # # # # # # # # # # # # #
+
+proc J_profile_CPP { t } {
+    set scale 0.0;
+          if {$t<=1.0e+9} {
+        set scale 1.00
+    } elseif {$t<=2.0e+9} {
+        set scale 1.00
+    } elseif {$t<=3.0e+9} {
+        set scale 1.00
+    } elseif {$t<=4.0e+9} {
+        set scale 1.00
+    }
+}

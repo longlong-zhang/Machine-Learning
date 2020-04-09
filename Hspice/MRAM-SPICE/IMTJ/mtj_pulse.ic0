@@ -1,0 +1,57 @@
+* "simulator" "HSPICE" 
+* "version" "A-2008.03 32-BIT"
+* "format" "HSP"
+* "rundate" "15:26:19 03/30/2020 "
+* "netlist" "c:\users\18851\desktop\spice\mram-spice\imtj\mtj_pulse.sp "
+* "runtitle" "**********************************************************************"
+* time =    0.            
+* temperature =   25.0000        
+*** BEGIN: Saved Operating Point ***                     
+.option 
++ gmindc=   1.0000p       
+.nodeset
++ 1 =   0.            
++ xmtj1.ex =   0.            
++ xmtj1.ias = 833.3333m       
++ xmtj1.ihd =   0.            
++ xmtj1.is =   0.            
++ xmtj1.mx = 150.7075u       
++ xmtj1.my =-996.3795m       
++ xmtj1.mz = 741.7101u       
++ xmtj1.thi =  85.2639m       
++ xmtj1.tmp = 358.0000        
++ xmtj1.xra.phi = 200.4602m       
++ xmtj1.xra.rap =   3.4258k       
++ xmtj1.xra.rmtj =   3.4225k       
++ xmtj1.xra.th =   3.0563        
++ xmtj1.xra.thip =   3.0969        
++ xmtj1.xra.thp =   0.            
++ xmtj1.xra.tmr = 110.4819        
++ xmtj1.xra.tmr0 = 110.4819        
++ xmtj1.xllg.hdx =-187.0062m       
++ xmtj1.xllg.hdy = 395.7841        
++ xmtj1.xllg.hdz =  -8.8257        
++ xmtj1.xllg.hefx =-187.0062m       
++ xmtj1.xllg.hefy = 395.7841        
++ xmtj1.xllg.hefz =  -8.8257        
++ xmtj1.xllg.ms =   1.0773k       
++ xmtj1.xllg.my1 =-996.3672m       
++ xmtj1.xllg.p = 596.5232m       
++ xmtj1.xllg.thste =  68.9434        
++ xmtj1.xhd.l1 = 358.0000        
++ xmtj1.xhd.l2 = 358.0000        
++ xmtj1.xhd.l3 = 358.0000        
++ xmtj1.xhd.l4 = 358.0000        
++ xmtj1.xhd.l5 = 358.0000        
++ xmtj1.xhd.l6 = 358.0000        
++ xmtj1.xhd.l7 = 358.0000        
++ xmtj1.xhd.m1 = 358.0000        
++ xmtj1.xhd.m2 = 358.0000        
++ xmtj1.xhd.r1 = 358.0000        
++ xmtj1.xhd.r2 = 358.0000        
++ xmtj1.xhd.r3 = 358.0000        
++ xmtj1.xhd.r4 = 358.0000        
++ xmtj1.xhd.r5 = 358.0000        
++ xmtj1.xhd.r6 = 358.0000        
++ xmtj1.xhd.r7 = 358.0000        
+***   END: Saved Operating Point ***                     
