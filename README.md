@@ -39,3 +39,12 @@ https://blog.csdn.net/liuhw4598/article/details/78279737?depth_1-utm_source=dist
     <img src="img/2020-04-06-19-35-28.png">
    
 </figure>
+
+<p align="right"><a href="https://doi.org/10.1038/s41586-019-1557-9">点击跳转原文</a> </p>
+<hr/>
+
+**行间公式**$$\frac{\partial J(\theta)}{\partial \theta_i} = \frac{1}{m}\sum_{k=1}^{m}[x^{(k)T}\theta - y^{(k)} ](x_i^{(k)}) + \frac{1}{m}\lambda\theta_i$$
+
+
+**行内公式：** where is the attempt time$(τ 0  ≈ 1 ns)$
+

@@ -43,9 +43,17 @@ Figure 2: Spin Switch device designs modeled as a **circuit built** of spintroni
 
 <font color=blue size=6 face="华文中宋">4. cicurit Model</font>
 
-![](img/2020-04-06-19-47-31.png)
-![](img/2020-04-06-19-51-23.png)
+<!-- ![](img/2020-04-06-19-47-31.png)
+![](img/2020-04-06-19-51-23.png) -->
 
+![](img/2020-04-08-23-48-10.png)
+![](img/2020-04-08-23-48-42.png)
+SPICE implementation of LLG equation (only y-coordinate shown for simplicity)
+• Internal variables are represented as node voltages using circuit elements
+• Differential behavior of magnetization by emulating an incremental charge build-up over time in a capacitor: **I=C∙dV/dt**
 <font color=blue size=6 face="华文中宋">5. Simulation Resullt</font>
+![](img/2020-04-08-23-50-11.png)
+<!-- ![](img/2020-04-06-19-54-11.png) -->
 
-![](img/2020-04-06-19-54-11.png)
+<font color=blue size=6 face="华文中宋">6. Variability Study: Simulation Setup</font>
+![](img/2020-04-08-23-55-02.png)  
